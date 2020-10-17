@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Integer> closestColorsList = new ArrayList<Integer>();
 
-
+    private void todo(){ }
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         supportView = (ImageView) findViewById(R.id.imageViewPlan);
         supportView.setImageDrawable(myDraw);
 
-        supportView.setOnTouchListener(mModeCreation );
+        supportView.setOnTouchListener(mModeLecture );
 
     }
 
@@ -73,18 +75,49 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
-        //R.menu.menu est l'id de notre menu
         inflater.inflate(R.layout.menu, menu);
         return true;
     }
 
+    /**
+     * Réagir au clic des elements de menu
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        switch (item.getItemId()){
+            case R.id.item_read: {
+                supportView.setOnTouchListener(mModeLecture);
+                Toast.makeText(this,R.string.reading_mode_info,Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.item_edit : {
+                supportView.setOnTouchListener(mModeCreation );
+                Toast.makeText(this,R.string.editting_mode_info,Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.item_reset : {
+                supportView.setOnTouchListener(mReinitialiserLeReseau );
+                Toast.makeText(this,R.string.resetting_mode_info,Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.item_further : {
+                Toast.makeText(this,R.string.further_mode_info,Toast.LENGTH_LONG).show();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+  //    Réinitialiser le reseau
+    private View.OnTouchListener mReinitialiserLeReseau = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return true;
+        }
+    } ;
 
-
-
-
-
+    // Basculer en mode lecture
     private View.OnTouchListener mModeLecture = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -143,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         }
     } ;
 
-
+    // Bacukler en mode création
     private View.OnTouchListener mModeCreation = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {

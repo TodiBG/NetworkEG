@@ -5,7 +5,7 @@
     <string name="node_settings">Nodes settings</string>
     <string name="close">Close</string>
     <string name="set_color">Set Color</string>
-    <string name="lis_of_arc">List of Arcs</string>
+    <string name="lis_of_arc">List of connexion</string>
     <string name="conn_setting">Connexion Settings</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
@@ -14,7 +14,17 @@
     <string name="connexion">Connexion</string>
     <string name="color">Color</string>
     <string name="select_action">select a connexion and edit it below</string>
-
     <string name="node_label"> Node Label</string>
+    <string name="reading_mode"> Reading mode </string>
+    <string name="editting_mode"> Editting mode </string>
+    <string name="resetting_mode"> Resetting mode </string>
+    <string name="further_mode"> further mode </string>
+
+    <string name="reading_mode_info"> You are on reading mode  !</string>
+    <string name="editting_mode_info"> You are on editting mode ! </string>
+    <string name="resetting_mode_info"> You are on ressetting mode ! </string>
+    <string name="further_mode_info"> further mode are not defined yet ! </string>
+
+
 
 </resources>

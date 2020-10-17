@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <item android:id="@+id/item1" android:title="Ajouter un objet"></item>
-    <item android:id="@+id/item2" android:title="Ajouter une connexion"></item>
-    <item android:id="@+id/item3" android:title="Modifications"></item>
-    <item android:id="@+id/item4" android:title="Réinitialiser le réseau"></item>
-    <item android:id="@+id/item5" android:title="Autres options"></item>
+    <item android:id="@+id/item_read" android:title="@string/reading_mode"></item>
+    <item android:id="@+id/item_edit" android:title="@string/editting_mode"></item>
+    <item android:id="@+id/item_reset" android:title="@string/resetting_mode"></item>
+    <item android:id="@+id/item_further" android:title="@string/further_mode"></item>
 
 </menu>
