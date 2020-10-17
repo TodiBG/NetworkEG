@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,160 +7,195 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
+    android:orientation="vertical"
     android:weightSum="1">
 
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="309dp"
-        android:layout_height="41dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/node_settings"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/defaultcolorbtn"
-        android:layout_width="202dp"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:text="@string/choose_default_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:ignore="RtlHardcoded" />
+        android:layout_width="match_parent">
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="309dp"
+            android:layout_height="41dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/node_settings"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/node_label_input"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
-        android:layout_marginStart="64dp"
-        android:inputType="text"
-        android:textColorLink="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nodelabel" />
+        android:gravity="right">
+        <Button
+            android:id="@+id/defaultcolorbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:text="@string/choose_default_color"
+             />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/dismiss"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/colorButtonNormal"
-        android:text="@string/cancel"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/savebtn"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/choosecolorbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/change_color"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/node_label_input" />
-
-    <Button
-        android:id="@+id/savebtn"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginBottom="84dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/holo_blue_light"
-        android:backgroundTint="@android:color/holo_blue_dark"
-        android:text="@string/save"
-        android:textAlignment="center"
-        android:layout_gravity ="center_horizontal"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connsetting" />
+        android:gravity="center_horizontal">
 
-    <Button
-        android:id="@+id/deletebtn"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:text="@string/node_name_label"
+            android:textSize="25dp"
+            android:textAlignment="center"
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:id="@+id/nodelabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/node_name"
+            android:textSize="25dp"
+            android:textAlignment="center"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="52dp"
-        android:layout_marginRight="52dp"
-        android:background="@android:color/holo_red_light"
-        android:text="@string/delete"
-        android:textColor="@android:color/white"
-        app:layout_constraintBaseline_toBaselineOf="@+id/choosecolorbtn"
-        app:layout_constraintBottom_toBottomOf="@+id/choosecolorbtn"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="22dp"
+            android:text="@string/change_name"
+            android:textAlignment="center"
+            android:layout_margin="8dp"/>
 
-    <TextView
-        android:id="@+id/nodelabel"
-        android:layout_width="wrap_content"
-        android:layout_height="31dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
+        <EditText
+            android:id="@+id/node_label_input"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="25dp"
+            android:textColorLink="@color/colorPrimary"/>
 
-        android:text="@string/node_label"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/defaultcolorbtn" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="111dp"
-        android:layout_height="44dp"
-        android:layout_margin="36dp"
-        android:gravity="center"
-        android:text="@string/label"
-        android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity=""
+        android:layout_margin="20dp">
+
+
+        <Button
+            android:id="@+id/choosecolorbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_color"/>
+
+        <Button
+            android:id="@+id/deletebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_red_light"
+            android:text="@string/delete"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="100dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="50dp">
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="211dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/conn_setting"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal"
-        android:textSize="20sp"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deletebtn" />
+        android:textSize="25sp" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/connsetting"
-        android:layout_width="87dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:text="Setting"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal" >
+
+        <Button
+            android:id="@+id/connsetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="15dp">
+
+
+        <Button
+            android:id="@+id/dismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorButtonNormal"
+            android:text="@string/cancel"
+            android:textSize="12sp"
+            android:layout_marginRight="5dp"
+            android:paddingHorizontal="60dp"/>
+
+
+        <Button
+            android:id="@+id/savebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_light"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="@string/save"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="5dp"
+            android:paddingHorizontal="60dp"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</LinearLayout>

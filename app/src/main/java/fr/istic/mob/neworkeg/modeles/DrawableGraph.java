@@ -90,9 +90,7 @@ public class DrawableGraph extends Drawable {
         mCanvas.drawText(node.getLabel(), xPos, yPos, mNodeLapelPaint);
     }
 
-    public void unDrawNode(Node node) {
-        mCanvas.drawCircle(node.getX(), node.getY(), node.getWidth() + 3, mConnPaint);
-    }
+
 
     @Override
     public void draw(@NonNull Canvas canvas) {

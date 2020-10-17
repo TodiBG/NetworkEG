@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     int umpx = 0;
     int umpy = 0;
 
-    final static long LONG_TOUCH_DURATION = 1000;
+    final static long LONG_TOUCH_DURATION = 700;
     long touchStartTime = 0;
 
     public boolean optionPopupVisible = false;
@@ -45,10 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     public Node selectedNode = null;
 
-
-    static {
-        mGraph = new Graph(4);
-    }
 
     public static Graph mGraph;
 
@@ -60,15 +56,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_main);
+        initReseau() ;
+    }
+
+    private void initReseau(){
+        mGraph = new Graph(0);
         myDraw = new DrawableGraph(mGraph);
         closestColorsList = myDraw.mGraph.getNodeColors();
-        setContentView(R.layout.activity_main);
         supportView = (ImageView) findViewById(R.id.imageViewPlan);
         supportView.setImageDrawable(myDraw);
-
         supportView.setOnTouchListener(mModeLecture );
-
     }
+
+
 
     @SuppressLint("ResourceType")
     @Override
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.item_reset : {
-                supportView.setOnTouchListener(mReinitialiserLeReseau );
+                // Réinitialiser le reseau
+                initReseau() ;
                 Toast.makeText(this,R.string.resetting_mode_info,Toast.LENGTH_LONG).show();
                 break;
             }
@@ -109,13 +111,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-  //    Réinitialiser le reseau
-    private View.OnTouchListener mReinitialiserLeReseau = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            return true;
-        }
-    } ;
 
     // Basculer en mode lecture
     private View.OnTouchListener mModeLecture = new View.OnTouchListener() {
@@ -180,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnTouchListener mModeCreation = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
+            long time = 0;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     downx = (int) event.getX();
@@ -190,14 +186,29 @@ public class MainActivity extends AppCompatActivity {
                     myDraw.setTempConnNull();
                     upx = (int) event.getX();
                     upy = (int) event.getY();
-                    if ((Math.abs(upx - downx) < 10) || (Math.abs(upy - downy) < 10)) {
+
+                     time = System.currentTimeMillis() - touchStartTime;
+
+                     boolean newNodeCreated = false ;
+
+                    if ( ((Math.abs(upx - downx) < 10) || (Math.abs(upy - downy) < 10)) && (time>=LONG_TOUCH_DURATION) ) {
                         int number = 1 + myDraw.mGraph.getNoeuds().size();
                         Node node = new Node(upx, upy, number + "");
-                        if (mGraph.addNode(node)) {
-
-                        }
+                        if (mGraph.addNode(node)) { newNodeCreated = true ; }
                         supportView.invalidate();
                     }
+
+                    if ( ((upx == downx) || (upy == downy)) && (time>=LONG_TOUCH_DURATION-800)&&(!newNodeCreated)  ) {
+                        Node currentNode = mGraph.selectedNode(downx, downy);
+                        if ((!optionPopupVisible)&&(currentNode != null)) {
+                            optionPopupVisible = true;
+                            selectedNode = currentNode;
+                            showOptions();
+                        }
+
+                    }
+
+
                     Node n1 = mGraph.selectedNode(downx, downy);
                     Node n2 = mGraph.selectedNode(upx, upy);
                     if ((n1 != null) && (n2 != null)) {
@@ -215,25 +226,13 @@ public class MainActivity extends AppCompatActivity {
 
                     Node startNode = mGraph.selectedNode(downx, downy);
                     Node tempNode = new Node(umpx, umpy);
-                    Connnexion conn = mGraph.selectedConn(umpx, umpy);
+
                     if ((startNode != null) && (tempNode != null)) {
                         Connnexion tempConn = new Connnexion(startNode, tempNode);
                         myDraw.setTempConn(tempConn);
                         supportView.invalidate();
                     }
-                    long time = System.currentTimeMillis() - touchStartTime;
-                    if (time > LONG_TOUCH_DURATION) {
-                        if ((startNode != null)) {
-                            if ((tempNode.overlap(startNode))) {// pas encore fais de mouvement ou pas encore loin
-                                if (!optionPopupVisible) {
-                                    optionPopupVisible = true;
-                                    selectedNode = startNode;
-                                    showOptions();
-                                }
-                            }
-                            return true;
-                        }
-                    }
+
                     break ;
                 case MotionEvent.ACTION_CANCEL:
                     break;
@@ -241,17 +240,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     };
-
-
-
-
-
-
-
-
-
-
-
 
 
 

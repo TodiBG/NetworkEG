@@ -2,28 +2,32 @@
     <string name="app_name">NeworkEG</string>
     <string name="label">Label</string>
     <string name="cancel">Cancel</string>
-    <string name="node_settings">Nodes settings</string>
+    <string name="node_settings">Object settings</string>
     <string name="close">Close</string>
     <string name="set_color">Set Color</string>
     <string name="lis_of_arc">List of connexion</string>
     <string name="conn_setting">Connexion Settings</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
-    <string name="change_color">Node color</string>
-    <string name="choose_default_color">Set nodes default color</string>
+    <string name="change_color">Object color</string>
+    <string name="choose_default_color">Set object default color</string>
     <string name="connexion">Connexion</string>
     <string name="color">Color</string>
     <string name="select_action">select a connexion and edit it below</string>
-    <string name="node_label"> Node Label</string>
+    <string name="node_name_label"> Object name : </string>
+    <string name="change_name"> Change it\'s name : </string>
+    <string name="node_name"> Object name </string>
     <string name="reading_mode"> Reading mode </string>
     <string name="editting_mode"> Editting mode </string>
-    <string name="resetting_mode"> Resetting mode </string>
+    <string name="resetting_mode"> Reset all </string>
     <string name="further_mode"> further mode </string>
+    <string name="setting"> Setting </string>
+
 
     <string name="reading_mode_info"> You are on reading mode  !</string>
     <string name="editting_mode_info"> You are on editting mode ! </string>
-    <string name="resetting_mode_info"> You are on ressetting mode ! </string>
-    <string name="further_mode_info"> further mode are not defined yet ! </string>
+    <string name="resetting_mode_info"> You have reset all ! </string>
+    <string name="further_mode_info"> further modes are not defined yet ! </string>
 
 
 

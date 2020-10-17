@@ -119,16 +119,9 @@ public class Connnexion {
         int x2 = this.getFin().getX();
         int y1 = this.getDebut().getY();
         int y2 = this.getFin().getY();
-        final Path path = new Path();
-        int midX = x1 + ((x2 - x1) / 2);
-        int midY = y1 + ((y2 - y1) / 2);
-        float xDiff = midX - x1;
-        float yDiff = midY - y1;
-        double angle = (Math.atan2(yDiff, xDiff) * (180 / Math.PI)) - 90;
-        double angleRadians = Math.toRadians(angle);
-        int curveRadius = -360;
-        float pointX = (float) (midX + curveRadius * Math.cos(angleRadians));
-        float pointY = (float) (midY + curveRadius * Math.sin(angleRadians));
+
+        float pointX = (x1+x2)/2;
+        float pointY = (y1+y2)/2 ;
         mMidPoint[0] = pointX;
         mMidPoint[1] = pointY;
     }
