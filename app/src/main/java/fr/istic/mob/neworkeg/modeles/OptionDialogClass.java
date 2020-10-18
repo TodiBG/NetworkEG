@@ -81,7 +81,7 @@ public class OptionDialogClass extends Dialog {
         defaultColorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                     activity.showDefaultColorPopup();
+                     activity.showNodeDefaultColorPopup();
                 }
         });
 

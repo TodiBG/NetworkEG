@@ -15,14 +15,13 @@ public class Node {
 
     public static int DEFAULT_COLOR = Color.BLUE;
     public static int DEFAULT_RADIUS = 45;
-    public static int CHAR_LENGTH = 6;
-    public static String DEFAULT_ETIQ = "";
+    public static String DEFAULT_LABEL = "";
 
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
         this.mColor = DEFAULT_COLOR;
-        this.mLabel = DEFAULT_ETIQ;
+        this.mLabel = DEFAULT_LABEL;
         setRadiaus();
     }
 
@@ -30,7 +29,7 @@ public class Node {
         this.x = x;
         this.y = y;
         this.mColor = color;
-        this.mLabel = DEFAULT_ETIQ;
+        this.mLabel = DEFAULT_LABEL;
         setRadiaus();
     }
 

@@ -137,6 +137,7 @@ public class DrawableGraph extends Drawable {
         mCanvas.drawPath(conn.getPath(), mWhitePaint);
         mCanvas.drawPath(conn.getPath(), mConnPaint);
 
+        //Dessine le milieu de la connexion
         mCanvas.drawCircle(conn.getMidPointX(),conn.getMidPointY(), conn.MID_POINT_RADIUS, mConnPaint);
     }
 

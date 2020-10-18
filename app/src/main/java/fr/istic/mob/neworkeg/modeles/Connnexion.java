@@ -1,5 +1,6 @@
 package fr.istic.mob.neworkeg.modeles;
 
+import android.graphics.Color;
 import android.graphics.Path;
 
 import java.util.Collection;
@@ -7,20 +8,20 @@ import java.util.Collection;
 
 public class Connnexion {
     private static final int SELECT_DISTANCE = 30;
+    public static int DEFAULT_COLOR = Color.RED;
     private Node mDebut;
     private Node mFin;
     private int mColor;
     private String mLabel;
 
-    public static float MID_POINT_RADIUS = 10 ;
+    public static float MID_POINT_RADIUS = 9 ;
     public static int CONN_WIDTH= 10;
 
 
     public Connnexion(Node debut, Node fin) {
-        this.mColor = debut.getColor();
+        this.mColor = DEFAULT_COLOR ;
         this.mDebut = debut;
         this.mFin = fin;
-        this.mColor = debut.getColor();
         this.mLabel = this.mDebut.getShortLabel()+" --> "+this.mFin.getShortLabel();
     }
 

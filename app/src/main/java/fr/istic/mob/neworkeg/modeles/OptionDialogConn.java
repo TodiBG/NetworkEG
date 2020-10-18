@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,6 +21,7 @@ public class OptionDialogConn extends Dialog {
 
     public MainActivity activity;
     private Button no;
+    private Button defautColorBtn ;
     private Button chooseColor;
     private Button removeConnBtn;
     private TextView firstNode  ;
@@ -43,9 +43,9 @@ public class OptionDialogConn extends Dialog {
         removeConnBtn = (Button) findViewById(R.id.removeConn);
         firstNode = (TextView)findViewById(R.id.firtNodeLabel) ;
         secondNode = (TextView)findViewById(R.id.secondNodeLabel) ;
-
         firstNode.setText(activity.selectedConn.getDebut().getLabel() );
         secondNode.setText(activity.selectedConn.getFin().getLabel());
+        defautColorBtn = (Button) findViewById(R.id.connDefautColorBtn) ;
 
         List<Connnexion> Connnexions = new ArrayList<Connnexion>();
         Connnexions = activity.getSelectConn();
@@ -59,18 +59,15 @@ public class OptionDialogConn extends Dialog {
             //categories.add(" -- > " + conn.getFin().getLabel());
         }
 
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter(this.getContext(), android.R.layout.simple_spinner_item, categories);
-
         no.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 activity.optionPopupVisible = false;
+                activity.supportView.invalidate();
                 dismiss();
             }
         });
 
-        final List<Connnexion> finalArcs = Connnexions;
 
         removeConnBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -82,14 +79,18 @@ public class OptionDialogConn extends Dialog {
             }
         });
 
-
+        defautColorBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.showConnDefaultColorPopup();
+            }
+        });
 
 
         chooseColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activity.showColorPopupConn();
-                dismiss();
             }
         });
 

@@ -1,7 +1,6 @@
 package fr.istic.mob.neworkeg;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.istic.mob.neworkeg.modeles.Connnexion;
@@ -22,6 +20,7 @@ import fr.istic.mob.neworkeg.modeles.Graph;
 import fr.istic.mob.neworkeg.modeles.Node;
 import fr.istic.mob.neworkeg.modeles.OptionDialogClass;
 import fr.istic.mob.neworkeg.modeles.OptionDialogConn;
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static Graph mGraph;
 
-    List<Integer> closestColorsList = new ArrayList<Integer>();
-
-    private void todo(){ }
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private void initReseau(){
         mGraph = new Graph(0);
         myDraw = new DrawableGraph(mGraph);
-        closestColorsList = myDraw.mGraph.getNodeColors();
         supportView = (ImageView) findViewById(R.id.imageViewPlan);
         supportView.setImageDrawable(myDraw);
         supportView.setOnTouchListener(mModeLecture );
@@ -245,7 +240,22 @@ public class MainActivity extends AppCompatActivity {
      */
 
     public void showNodeColorPopup() {
-        selectedNode.setColor(Color.RED);
+
+        ColorPicker colorPicker = new ColorPicker(this);
+        colorPicker.show();
+        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+            @Override
+            public void onChooseColor(int position,int color) {
+                if( (Integer)color != 0) {
+                    selectedNode.setColor(color);
+                }
+            }
+
+            @Override
+            public void onCancel(){    }
+        });
+
+
         supportView.invalidate();
     }
 
@@ -256,13 +266,55 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void showColorPopupConn() {
-        selectedConn.setColor(Color.RED);
+        ColorPicker colorPicker = new ColorPicker(this);
+        colorPicker.show();
+        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+            @Override
+            public void onChooseColor(int position,int color) {
+                if( (Integer)color != 0) {
+                    selectedConn.setColor(color);
+                }
+            }
+
+            @Override
+            public void onCancel(){    }
+        });
+
         supportView.invalidate();
+
     }
 
 
-    public void showDefaultColorPopup() {
-        Node.DEFAULT_COLOR  = Color.GREEN ;
+    public void showNodeDefaultColorPopup() {
+        ColorPicker colorPicker = new ColorPicker(this);
+        colorPicker.show();
+        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+            @Override
+            public void onChooseColor(int position,int color) {
+                if( (Integer)color != 0) {
+                    Node.DEFAULT_COLOR = color ;
+                }
+            }
+
+            @Override
+            public void onCancel(){    }
+        });
+    }
+
+    public void showConnDefaultColorPopup() {
+        ColorPicker colorPicker = new ColorPicker(this);
+        colorPicker.show();
+        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+            @Override
+            public void onChooseColor(int position,int color) {
+                if( (Integer)color != 0) {
+                    Connnexion.DEFAULT_COLOR = color ;
+                }
+            }
+
+            @Override
+            public void onCancel(){    }
+        });
     }
 
     public void showOptions() {
