@@ -159,7 +159,7 @@ public class Graph {
      * @param y
      * @return
      */
-    public Node selectedNode(int x, int y) {
+    public Node getSelectedNode(int x, int y) {
         Node node = new Node(x, y);
         boolean overlap = false;
 
@@ -273,8 +273,7 @@ public class Graph {
      * @param y
      * @return conn
      */
-    public Connnexion selectedConn(int x, int y) {
-        boolean overlap = false;
+    public Connnexion getSelectedConn(int x, int y) {
         ListIterator<Connnexion> it = mConns.listIterator(mConns.size());
         while (it.hasPrevious()) {
             Connnexion conn = it.previous();

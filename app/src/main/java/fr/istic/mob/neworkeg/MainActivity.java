@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Integer selectedColor;
 
     public Node selectedNode = null;
+    public static Connnexion selectedConn = null;
 
 
     public static Graph mGraph;
@@ -127,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
                     upx = (int) event.getX();
                     upy = (int) event.getY();
 
-                    Node n1 = mGraph.selectedNode(downx, downy);
-                    Node n2 = mGraph.selectedNode(upx, upy);
+                    Node n1 = mGraph.getSelectedNode(downx, downy);
+                    Node n2 = mGraph.getSelectedNode(upx, upy);
                     if ((n1 != null) && (n2 != null)) {
                         Connnexion a = new Connnexion(n1, n2);
                         mGraph.addConn(a);
@@ -142,27 +143,15 @@ public class MainActivity extends AppCompatActivity {
                     umpx = (int) event.getX();
                     umpy = (int) event.getY();
 
-                    Node startNode = mGraph.selectedNode(downx, downy);
+                    Node startNode = mGraph.getSelectedNode(downx, downy);
                     Node tempNode = new Node(umpx, umpy);
-                    Connnexion conn = mGraph.selectedConn(umpx, umpy);
+                    Connnexion conn = mGraph.getSelectedConn(umpx, umpy);
                     if ((startNode != null) && (tempNode != null)) {
                         Connnexion tempConn = new Connnexion(startNode, tempNode);
                         myDraw.setTempConn(tempConn);
                         supportView.invalidate();
                     }
-                    long time = System.currentTimeMillis() - touchStartTime;
-                    if (time > LONG_TOUCH_DURATION) {
-                        if ((startNode != null)) {
-                            if ((tempNode.overlap(startNode))) {// pas encore fais de mouvement ou pas encore loin
-                                if (!optionPopupVisible) {
-                                    optionPopupVisible = true;
-                                    selectedNode = startNode;
-                                    showOptions();
-                                }
-                            }
-                            return true;
-                        }
-                    }
+
                     break ;
                 case MotionEvent.ACTION_CANCEL:
                     break;
@@ -199,18 +188,25 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if ( ((upx == downx) || (upy == downy)) && (time>=LONG_TOUCH_DURATION-800)&&(!newNodeCreated)  ) {
-                        Node currentNode = mGraph.selectedNode(downx, downy);
+
+                        Node currentNode = mGraph.getSelectedNode(downx, downy);
                         if ((!optionPopupVisible)&&(currentNode != null)) {
                             optionPopupVisible = true;
                             selectedNode = currentNode;
                             showOptions();
+                        }else {
+                            Connnexion currentConn = mGraph.getSelectedConn(downx, downy);
+                            if ( (currentConn != null)&&(!optionPopupVisible) ){
+                                optionPopupVisible = true;
+                                selectedConn = currentConn ;
+                                showOptionsConn();
+                            }
                         }
-
                     }
 
 
-                    Node n1 = mGraph.selectedNode(downx, downy);
-                    Node n2 = mGraph.selectedNode(upx, upy);
+                    Node n1 = mGraph.getSelectedNode(downx, downy);
+                    Node n2 = mGraph.getSelectedNode(upx, upy);
                     if ((n1 != null) && (n2 != null)) {
                         Connnexion a = new Connnexion(n1, n2);
                         mGraph.addConn(a);
@@ -224,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                     umpx = (int) event.getX();
                     umpy = (int) event.getY();
 
-                    Node startNode = mGraph.selectedNode(downx, downy);
+                    Node startNode = mGraph.getSelectedNode(downx, downy);
                     Node tempNode = new Node(umpx, umpy);
 
                     if ((startNode != null) && (tempNode != null)) {
@@ -259,9 +255,8 @@ public class MainActivity extends AppCompatActivity {
      */
 
 
-    public void showColorPopupConn(final Connnexion conn) {
-
-        conn.setColor(Color.BLUE);
+    public void showColorPopupConn() {
+        selectedConn.setColor(Color.RED);
         supportView.invalidate();
     }
 
@@ -278,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showOptionsConn() {
         OptionDialogConn optionDialogConn = new OptionDialogConn(this);
+
         optionDialogConn.show();
 
     }

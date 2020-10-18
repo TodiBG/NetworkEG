@@ -28,6 +28,11 @@
     <string name="editting_mode_info"> You are on editting mode ! </string>
     <string name="resetting_mode_info"> You have reset all ! </string>
     <string name="further_mode_info"> further modes are not defined yet ! </string>
+    <string name="firstNode"> Object 1 : </string>
+    <string name="secondNode"> Object 2 : </string>
+    <string name="remove"> Remove </string>
+
+
 
 
 

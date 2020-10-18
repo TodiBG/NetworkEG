@@ -74,7 +74,6 @@ public class DrawableGraph extends Drawable {
     }
 
     public void drawNode(Node node) {
-
         mModePaint.setColor(node.getColor());
         int left = node.getX()-2*node.getWidth() ;
         int right = node.getX()+2*node.getWidth() ;
@@ -83,10 +82,28 @@ public class DrawableGraph extends Drawable {
 
         mCanvas.drawRect(left, top, right, bottom, mModePaint);
 
-
         //Afficher le nom de l'objet
-        int xPos = node.getX() - (int) (mNodeLapelPaint.measureText(node.getLabel()) / 2);
-        int yPos = (int) (node.getY() - ((mNodeLapelPaint.descent() + mNodeLapelPaint.ascent()) / 2));
+        node.setLabelSize(LABEL_TEXT_SIZE);
+        if( node.getLabel().length()>10){
+            if( node.getLabel().length()<18){
+                node.setLabelSize(20);
+            }else if( node.getLabel().length()<22){
+                node.setLabelSize(15);
+            }else if( node.getLabel().length()<26){
+                node.setLabelSize(10);
+            }else {
+                node.setLabelSize(10);
+                String label = node.getLabel() ;
+                label = label.substring(0, 23) ;
+                label = label+"..." ;
+                node.setLabel(label);
+            }
+        }
+        mNodeLapelPaint.setTextSize(node.getLabelSize());
+        //Afficher le nom de l'objet
+        int xPos =  node.getX() - (int) (mNodeLapelPaint.measureText(node.getLabel()) / 2);
+        int yPos =  (int) (node.getY() - ((mNodeLapelPaint.descent() + mNodeLapelPaint.ascent()) / 2));
+
         mCanvas.drawText(node.getLabel(), xPos, yPos, mNodeLapelPaint);
     }
 
@@ -100,13 +117,8 @@ public class DrawableGraph extends Drawable {
     }
 
     private void drawNodes() {
-        int ic = 0;
         for (Node node : mGraph.getNoeuds()) {
             drawNode(node);
-            ic++;
-        }
-        if (ic == 0) {
-            mCanvas.drawCircle(0, 0, 1500, mConnPaint);
         }
     }
 
@@ -124,6 +136,8 @@ public class DrawableGraph extends Drawable {
         mConnPaint.setColor(conn.getColor());
         mCanvas.drawPath(conn.getPath(), mWhitePaint);
         mCanvas.drawPath(conn.getPath(), mConnPaint);
+
+        mCanvas.drawCircle(conn.getMidPointX(),conn.getMidPointY(), conn.MID_POINT_RADIUS, mConnPaint);
     }
 
     @Override

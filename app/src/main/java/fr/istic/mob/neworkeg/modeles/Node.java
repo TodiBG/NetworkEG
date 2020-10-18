@@ -9,6 +9,7 @@ public class Node {
     private int x;
     private int y;
     private String mLabel;
+    private int mLabelSize;
     private int mColor;
     private int width;
 
@@ -61,12 +62,20 @@ public class Node {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setY(int Y) {
+        this.y = Y;
     }
 
     public String getLabel() {
         return this.mLabel;
+    }
+
+    public int getLabelSize() {
+        return mLabelSize;
+    }
+
+    public void setLabelSize(int size) {
+        this.mLabelSize = size;
     }
 
     public String getShortLabel() {
@@ -95,20 +104,15 @@ public class Node {
     }
 
     /**
-     * Le diamètre en fonction de l'etiquete
+     * definir la taille de l'objet en fonction son nom
      */
     public void setRadiaus() {
-        int length = this.mLabel.length();
-        if (length < 4) {
-            this.width = DEFAULT_RADIUS;
-        } else if (length <= 10) {
-            this.width = DEFAULT_RADIUS + length * length;
-        } else if (length <= 25) {
-            this.width = DEFAULT_RADIUS + length * length - length * (length / 2) - length;
-        } else {
-            this.width = DEFAULT_RADIUS + length * length - length * (length / 2) - length * 10;
-        }
 
+        this.width = DEFAULT_RADIUS ;
+
+       /*
+        this.width = DEFAULT_RADIUS * quelqueChose ;
+       */
     }
 
     /**

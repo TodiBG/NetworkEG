@@ -6,13 +6,13 @@ import java.util.Collection;
 
 
 public class Connnexion {
-    private static final int SELECT_DISTANCE = 20;
+    private static final int SELECT_DISTANCE = 30;
     private Node mDebut;
     private Node mFin;
     private int mColor;
     private String mLabel;
-    private float [] mMidPoint;
 
+    public static float MID_POINT_RADIUS = 10 ;
     public static int CONN_WIDTH= 10;
 
 
@@ -22,8 +22,6 @@ public class Connnexion {
         this.mFin = fin;
         this.mColor = debut.getColor();
         this.mLabel = this.mDebut.getShortLabel()+" --> "+this.mFin.getShortLabel();
-        mMidPoint = new float[]{0,0};
-        setMidPoint();
     }
 
     public Node getDebut() {
@@ -95,7 +93,7 @@ public class Connnexion {
     }
 
     public String details(){
-        return mDebut.getShortLabel()+" --> "+mFin.getShortLabel()+", label: "+mLabel+", mid:("+mMidPoint[0]+","+mMidPoint[1]+")";
+        return mDebut.getShortLabel()+" --> "+mFin.getShortLabel()+", label: "+mLabel+", mid:("+getMidPointX()+","+getMidPointY()+")";
     }
 
     /**
@@ -103,7 +101,6 @@ public class Connnexion {
      * @return
      */
     public Path getPath(){
-        setMidPoint();
         int x1 = this.getDebut().getX();
         int x2 = this.getFin().getX();
         int y1 = this.getDebut().getY();
@@ -114,21 +111,29 @@ public class Connnexion {
         return path;
     }
 
-    public void setMidPoint (){
+
+
+    public float getMidPointX (){
         int x1 = this.getDebut().getX();
         int x2 = this.getFin().getX();
+
+        return (x1+x2)/2;
+    }
+
+    public float getMidPointY (){
         int y1 = this.getDebut().getY();
         int y2 = this.getFin().getY();
 
-        float pointX = (x1+x2)/2;
-        float pointY = (y1+y2)/2 ;
-        mMidPoint[0] = pointX;
-        mMidPoint[1] = pointY;
+        return  (y1+y2)/2 ;
     }
 
 
     public boolean isSelected(int x,int y){
-        return (this.mMidPoint[0] - x < SELECT_DISTANCE) && (this.mMidPoint[1] - x < SELECT_DISTANCE);
+
+        float distanceX = Math.abs(this.getMidPointX() - x) ;
+        float distanceY = Math.abs( this.getMidPointY() - y ) ;
+
+        return (distanceX < SELECT_DISTANCE) && (distanceY < SELECT_DISTANCE);
     }
 
     /**
