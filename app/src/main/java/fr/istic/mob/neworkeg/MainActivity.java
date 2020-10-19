@@ -18,8 +18,6 @@ import fr.istic.mob.neworkeg.modeles.Connnexion;
 import fr.istic.mob.neworkeg.modeles.DrawableGraph;
 import fr.istic.mob.neworkeg.modeles.Graph;
 import fr.istic.mob.neworkeg.modeles.Node;
-import fr.istic.mob.neworkeg.modeles.OptionDialogClass;
-import fr.istic.mob.neworkeg.modeles.OptionDialogConn;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     final static long LONG_TOUCH_DURATION = 700;
     long touchStartTime = 0;
 
-    public boolean optionPopupVisible = false;
+    public static boolean  optionPopupVisible = false;
     private Integer selectedColor;
 
     public Node selectedNode = null;
@@ -103,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,R.string.further_mode_info,Toast.LENGTH_LONG).show();
                 break;
             }
+            case R.id.item_help : {
+                OptionDialogHelp optionDialogHelp = new OptionDialogHelp(this);
+                optionDialogHelp.show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -124,15 +126,11 @@ public class MainActivity extends AppCompatActivity {
                     upy = (int) event.getY();
 
                     Node n1 = mGraph.getSelectedNode(downx, downy);
-                    Node n2 = mGraph.getSelectedNode(upx, upy);
-                    if ((n1 != null) && (n2 != null)) {
-                        Connnexion a = new Connnexion(n1, n2);
-                        mGraph.addConn(a);
-                        supportView.invalidate();
-                    } else if (n1 != null) {
+                     if ( n1 != null ) {
                         n1.upadte(upx, upy);
-                        supportView.invalidate();
-                    }
+                      }
+
+                    supportView.invalidate();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     umpx = (int) event.getX();
@@ -140,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Node startNode = mGraph.getSelectedNode(downx, downy);
                     Node tempNode = new Node(umpx, umpy);
-                    Connnexion conn = mGraph.getSelectedConn(umpx, umpy);
+
                     if ((startNode != null) && (tempNode != null)) {
                         Connnexion tempConn = new Connnexion(startNode, tempNode);
                         myDraw.setTempConn(tempConn);
@@ -318,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showOptions() {
-        OptionDialogClass optionDialog = new OptionDialogClass(this);
+        OptionDialogNode optionDialog = new OptionDialogNode(this);
         optionDialog.show();
 
     }

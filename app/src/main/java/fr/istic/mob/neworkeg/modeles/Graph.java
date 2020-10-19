@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
-/**
- * Created by diarranabe on 04/10/2017.
- */
-
 public class Graph {
 
     public int mMaxX = 600;
@@ -161,16 +157,15 @@ public class Graph {
      */
     public Node getSelectedNode(int x, int y) {
         Node node = new Node(x, y);
-        boolean overlap = false;
-
+        Node foundNode = null ;
         Iterator<Node> i = mNodes.iterator();
         while (i.hasNext()) {
             Node n = (Node) i.next();
             if (Node.overlap(n, node)) {
-                return n;
+                foundNode = n;
             }
         }
-        return null;
+        return foundNode ;
     }
 
     /**

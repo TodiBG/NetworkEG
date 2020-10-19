@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">NeworkEG</string>
     <string name="label">Label</string>
     <string name="cancel">Cancel</string>
@@ -21,6 +22,7 @@
     <string name="editting_mode"> Editting mode </string>
     <string name="resetting_mode"> Reset all </string>
     <string name="further_mode"> further mode </string>
+    <string name="item_help">Help </string>
     <string name="setting"> Setting </string>
 
 
@@ -34,9 +36,6 @@
     <string name="connDefautColor">Set default color </string>
 
 
-
-
-
-
+    <string name="help_pup_title">Help </string>
 
 </resources>

@@ -1,4 +1,4 @@
-package fr.istic.mob.neworkeg.modeles;
+package fr.istic.mob.neworkeg;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -10,12 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.istic.mob.neworkeg.MainActivity;
-import fr.istic.mob.neworkeg.R;
-
-/**
- * Created by matok on 09/11/2017.
- */
+import fr.istic.mob.neworkeg.modeles.Connnexion;
 
 public class OptionDialogConn extends Dialog {
 

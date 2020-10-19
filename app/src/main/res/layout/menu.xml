@@ -7,5 +7,6 @@
     <item android:id="@+id/item_edit" android:title="@string/editting_mode"></item>
     <item android:id="@+id/item_reset" android:title="@string/resetting_mode"></item>
     <item android:id="@+id/item_further" android:title="@string/further_mode"></item>
+    <item android:id="@+id/item_help" android:title="@string/item_help"> </item>
 
 </menu>
