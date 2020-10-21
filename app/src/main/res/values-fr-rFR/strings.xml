@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NeworkEG</string>
+    <string name="label">Label</string>
+    <string name="cancel">Annuler</string>
+    <string name="node_settings">Parametre des objets</string>
+    <string name="close">Fermer</string>
+    <string name="set_color">liste des couleurs</string>
+    <string name="lis_of_arc">liste des connections</string>
+    <string name="conn_setting">Parametre des connections</string>
+    <string name="delete">effacer</string>
+    <string name="save">enregistrer</string>
+    <string name="change_color">Couleur de l\' objet</string>
+    <string name="choose_default_color">Liste des couleurs</string>
+    <string name="connexion">Connection</string>
+    <string name="color">Couleurs</string>
+    <string name="select_action">sélectionnez une connexion et modifiez-la ci-dessous</string>
+    <string name="node_name_label"> Nom de l\'objet : </string>
+    <string name="change_name"> Changer le nom : </string>
+    <string name="node_name"> Object name </string>
+    <string name="reading_mode"> mode lecture </string>
+    <string name="editting_mode"> mode Edition </string>
+    <string name="resetting_mode"> Tout reunitialiser </string>
+    <string name="further_mode"> Autres options </string>
+    <string name="item_help">Aide </string>
+    <string name="setting"> Parametre </string>
+
+
+    <string name="reading_mode_info"> Vous etes en mode lecture !</string>
+    <string name="editting_mode_info"> Vous etes en mode edition ! </string>
+    <string name="resetting_mode_info"> Vous avez reunitialisez le graphe ! </string>
+    <string name="further_mode_info"> further modes are not defined yet ! </string>
+    <string name="firstNode"> Objet 1 : </string>
+    <string name="secondNode"> Objet 2 : </string>
+    <string name="remove"> Supprimer </string>
+    <string name="connDefautColor">Couleurs </string>
+
+
+    <string name="help_pup_title">Aide </string>
+    <string name="HelpText">\n\n\nCette application a pour but de connecter les objets d’un appartement.\n
+Son menu est composé des options:\n
+Mode création\n
+Le mode création permet de faire des objets (présentés sous forme de rectangle) ainsi que choisir les objets qui seront connectés entre eux grâce à un touché de ces deux objets
+Un long click sur un objet permet d\'ouvrir les paramètres de cet objet vous pouvez changer la couleur le nom ainsi que le supprimer, c'est aussi le cas d'une connexion.
+
+Mode lecture \n
+ce mode permet d'avoir un aperçu du plan de l'appartement et de ses objets sans pouvoir les modifier.
+Les autres options est le représentant des fonctionnalités qui seront développer dans la V2.\n
+L'Aide permet d'Apprendre à utiliser l'application.\n\n\n</string>
+
+</resources>
