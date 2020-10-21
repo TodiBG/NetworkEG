@@ -2,35 +2,37 @@
 <resources>
 
     <string name="app_name">NeworkEG</string>
-    <string name="label">Label</string>
+    <string name="label">Nom</string>
     <string name="cancel">Annuler</string>
-    <string name="node_settings">Parametre des objets</string>
+    <string name="node_settings">Paramètre des objets</string>
     <string name="close">Fermer</string>
-    <string name="set_color">liste des couleurs</string>
-    <string name="lis_of_arc">liste des connections</string>
-    <string name="conn_setting">Parametre des connections</string>
-    <string name="delete">effacer</string>
-    <string name="save">enregistrer</string>
-    <string name="change_color">Couleur de l\' objet</string>
-    <string name="choose_default_color">Liste des couleurs</string>
-    <string name="connexion">Connection</string>
+    <string name="set_color">Liste des couleurs</string>
+    <string name="lis_of_arc">Liste des connections</string>
+    <string name="conn_setting">Paramètre des connections</string>
+    <string name="delete">Supprimer</string>
+    <string name="save">Enregistrer</string>
+    <string name="change_color">Couleur de l\'objet</string>
+    <string name="choose_default_color">Couleurs par defaut</string>
+    <string name="connexion">Connexion</string>
     <string name="color">Couleurs</string>
-    <string name="select_action">sélectionnez une connexion et modifiez-la ci-dessous</string>
     <string name="node_name_label"> Nom de l\'objet : </string>
     <string name="change_name"> Changer le nom : </string>
-    <string name="node_name"> Object name </string>
-    <string name="reading_mode"> mode lecture </string>
-    <string name="editting_mode"> mode Edition </string>
-    <string name="resetting_mode"> Tout reunitialiser </string>
+    <string name="node_name"> Nom de l\'objet </string>
+    <string name="reading_mode"> Mode lecture </string>
+    <string name="editting_mode"> Mode Edition </string>
+    <string name="resetting_mode"> Tout réunitialiser </string>
     <string name="further_mode"> Autres options </string>
+    <string name="objetNonDeplacableEnModeCreation"> Les objets ne neuvent être delpacés seulement qu\'en MODE LECTURE ! </string>
+    <string name="passOnCreationMode"> Activez le MODE EDITION pour créer ou modifier des objects ! </string>
+
     <string name="item_help">Aide </string>
-    <string name="setting"> Parametre </string>
+    <string name="setting"> Paramàtre </string>
 
 
-    <string name="reading_mode_info"> Vous etes en mode lecture !</string>
-    <string name="editting_mode_info"> Vous etes en mode edition ! </string>
-    <string name="resetting_mode_info"> Vous avez reunitialisez le graphe ! </string>
-    <string name="further_mode_info"> further modes are not defined yet ! </string>
+    <string name="reading_mode_info"> Vous êtes en mode lecture !</string>
+    <string name="editting_mode_info"> Vous êtes en mode edition ! </string>
+    <string name="resetting_mode_info"> Vous avez réunitialisez le graphe ! </string>
+    <string name="further_mode_info"> Les autres options ne sont pas encore definies ! </string>
     <string name="firstNode"> Objet 1 : </string>
     <string name="secondNode"> Objet 2 : </string>
     <string name="remove"> Supprimer </string>
@@ -38,15 +40,15 @@
 
 
     <string name="help_pup_title">Aide </string>
-    <string name="HelpText">\n\n\nCette application a pour but de connecter les objets d’un appartement.\n
+    <string name="HelpText">\n\n\nCette application a pour but de connecter les objets d\'un appartement.\n
 Son menu est composé des options:\n
 Mode création\n
 Le mode création permet de faire des objets (présentés sous forme de rectangle) ainsi que choisir les objets qui seront connectés entre eux grâce à un touché de ces deux objets
-Un long click sur un objet permet d\'ouvrir les paramètres de cet objet vous pouvez changer la couleur le nom ainsi que le supprimer, c'est aussi le cas d'une connexion.
+Un long click sur un objet permet d\'ouvrir les paramètres de cet objet vous pouvez changer la couleur le nom ainsi que le supprimer, c\'est aussi le cas d\'une connexion.
 
 Mode lecture \n
-ce mode permet d'avoir un aperçu du plan de l'appartement et de ses objets sans pouvoir les modifier.
+ce mode permet d\'avoir un aperçu du plan de l\'appartement et de ses objets sans pouvoir les modifier.
 Les autres options est le représentant des fonctionnalités qui seront développer dans la V2.\n
-L'Aide permet d'Apprendre à utiliser l'application.\n\n\n</string>
+L\'Aide permet d\'Apprendre à utiliser l\'application.\n\n\n</string>
 
 </resources>
