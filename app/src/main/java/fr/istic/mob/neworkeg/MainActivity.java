@@ -37,20 +37,21 @@ public class MainActivity extends AppCompatActivity {
     final static long LONG_TOUCH_DURATION = 700;
     long touchStartTime = 0;
 
-    public static boolean  optionPopupVisible = false;
+    public static boolean  optionPopupNodeVisible = false;
+    public static boolean  optionPopupConnVisible = false;
     private Integer selectedColor;
 
     public Node selectedNode = null;
     public static Connnexion selectedConn = null;
-
-
     public static Graph mGraph;
+
+    int mMode = 0 ;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         initReseau() ;
     }
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             }
             case R.id.item_edit : {
                 supportView.setOnTouchListener(mModeCreation );
+                mMode = 2 ;
                 Toast.makeText(this,R.string.editting_mode_info,Toast.LENGTH_LONG).show();
                 break;
             }
@@ -109,45 +111,45 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private  void creationAndLectureInfo(int message){
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+    }
+
 
     // Basculer en mode lecture
     private View.OnTouchListener mModeLecture = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            mMode = 1 ;
             switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_DOWN: {
                     downx = (int) event.getX();
                     downy = (int) event.getY();
+                    selectedNode = mGraph.getSelectedNode(downx, downy);
                     touchStartTime = System.currentTimeMillis();
+
                     break;
-                case MotionEvent.ACTION_UP:
-                    myDraw.setTempConnNull();
+                }
+                case MotionEvent.ACTION_UP: {
                     upx = (int) event.getX();
                     upy = (int) event.getY();
-
-                    Node n1 = mGraph.getSelectedNode(downx, downy);
-                     if ( n1 != null ) {
-                        n1.upadte(upx, upy);
-                      }
-
-                    supportView.invalidate();
-                    break;
-                case MotionEvent.ACTION_MOVE:
+                    Long time = System.currentTimeMillis() - touchStartTime;
+                    if ( ((Math.abs(upx - downx) < 10) || (Math.abs(upy - downy) < 10)) && (time>=LONG_TOUCH_DURATION) ) {
+                        creationAndLectureInfo(R.string.passOnCreationMode) ;
+                    }
+                    break;}
+                case MotionEvent.ACTION_MOVE:{
                     umpx = (int) event.getX();
                     umpy = (int) event.getY();
-
-                    Node startNode = mGraph.getSelectedNode(downx, downy);
-                    Node tempNode = new Node(umpx, umpy);
-
-                    if ((startNode != null) && (tempNode != null)) {
-                        Connnexion tempConn = new Connnexion(startNode, tempNode);
-                        myDraw.setTempConn(tempConn);
-                        supportView.invalidate();
+                    selectedNode = mGraph.getSelectedNode(umpx, umpy);
+                    if ( selectedNode != null ) {
+                        selectedNode.upadte(umpx, umpy);
                     }
-
+                    supportView.invalidate();
                     break ;
-                case MotionEvent.ACTION_CANCEL:
-                    break;
+                }
+                case MotionEvent.ACTION_CANCEL:{break;}
+
             }
             return true;
         }
@@ -157,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnTouchListener mModeCreation = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
+            mMode = 2 ;
             long time = 0;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -169,10 +172,8 @@ public class MainActivity extends AppCompatActivity {
                     upx = (int) event.getX();
                     upy = (int) event.getY();
 
-                     time = System.currentTimeMillis() - touchStartTime;
-
-                     boolean newNodeCreated = false ;
-
+                    boolean newNodeCreated = false ;
+                    time = System.currentTimeMillis() - touchStartTime;
                     if ( ((Math.abs(upx - downx) < 10) || (Math.abs(upy - downy) < 10)) && (time>=LONG_TOUCH_DURATION) ) {
                         int number = 1 + myDraw.mGraph.getNoeuds().size();
                         Node node = new Node(upx, upy, number + "");
@@ -183,14 +184,14 @@ public class MainActivity extends AppCompatActivity {
                     if ( ((upx == downx) || (upy == downy)) && (time>=LONG_TOUCH_DURATION-800)&&(!newNodeCreated)  ) {
 
                         Node currentNode = mGraph.getSelectedNode(downx, downy);
-                        if ((!optionPopupVisible)&&(currentNode != null)) {
-                            optionPopupVisible = true;
+                        if ((!optionPopupConnVisible && !optionPopupNodeVisible)&&(currentNode != null)) {
+                            optionPopupNodeVisible = true;
                             selectedNode = currentNode;
                             showOptions();
                         }else {
                             Connnexion currentConn = mGraph.getSelectedConn(downx, downy);
-                            if ( (currentConn != null)&&(!optionPopupVisible) ){
-                                optionPopupVisible = true;
+                            if ( (currentConn != null)&&(!optionPopupConnVisible && !optionPopupNodeVisible) ){
+                                optionPopupConnVisible = true;
                                 selectedConn = currentConn ;
                                 showOptionsConn();
                             }
@@ -204,9 +205,10 @@ public class MainActivity extends AppCompatActivity {
                         Connnexion a = new Connnexion(n1, n2);
                         mGraph.addConn(a);
                         supportView.invalidate();
-                    } else if (n1 != null) {
-                        n1.upadte(upx, upy);
+                    }
+                    else if (n1 != null) {
                         supportView.invalidate();
+                        creationAndLectureInfo(R.string.objetNonDeplacableEnModeCreation) ;
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:

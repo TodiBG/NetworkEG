@@ -268,7 +268,7 @@ public class Graph {
      * @param y
      * @return conn
      */
-    public Connnexion getSelectedConn(int x, int y) {
+    public Connnexion getSelectedConn(float x, float y) {
         ListIterator<Connnexion> it = mConns.listIterator(mConns.size());
         while (it.hasPrevious()) {
             Connnexion conn = it.previous();
@@ -308,33 +308,11 @@ public class Graph {
         return x;
     }
 
-    /**
-     * Ajoute n connexion de manière aléatoire (n<=nombre de nodes)
-     */
-    public void addRandomConns() {
-        for (int i = 0; i < mNodes.size(); i++) {
-            addConn(getRandomNodeIndex(), getRandomNodeIndex());
-        }
-    }
 
-    /**
-     * Ajoute n connexions de manière aléatoire (n<=nombre de nodes)
-     *
-     * @param n si n > nombre de nodes il est ignoré, addRandomConns() est executé
-     */
-    public void addRandomConns(int n) {
-        if (n < mNodes.size()) {
-            for (int i = 0; i < n; i++) {
-                addConn(getRandomNodeIndex(), getRandomNodeIndex());
-            }
-        } else {
-            addRandomConns();
-        }
-    }
 
 
     /**
-     * Retourne toutes les connexions dont le Node en parametre en le debut
+     * Retourne toutes les connexions dont le Node en parametre est le debut
      *
      * @param nodeBegin si nodeBegin n'est lie a aucun autre node on retourne une liste vide
      */

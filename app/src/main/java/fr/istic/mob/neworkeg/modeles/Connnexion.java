@@ -102,10 +102,10 @@ public class Connnexion {
      * @return
      */
     public Path getPath(){
-        int x1 = this.getDebut().getX();
-        int x2 = this.getFin().getX();
-        int y1 = this.getDebut().getY();
-        int y2 = this.getFin().getY();
+        float x1 = this.getDebut().getX();
+        float x2 = this.getFin().getX();
+        float y1 = this.getDebut().getY();
+        float y2 = this.getFin().getY();
         final Path path = new Path();
         path.moveTo(x1, y1);
         path.lineTo(x2, y2);
@@ -115,21 +115,21 @@ public class Connnexion {
 
 
     public float getMidPointX (){
-        int x1 = this.getDebut().getX();
-        int x2 = this.getFin().getX();
+        float x1 = this.getDebut().getX();
+        float x2 = this.getFin().getX();
 
         return (x1+x2)/2;
     }
 
     public float getMidPointY (){
-        int y1 = this.getDebut().getY();
-        int y2 = this.getFin().getY();
+        float y1 = this.getDebut().getY();
+        float y2 = this.getFin().getY();
 
         return  (y1+y2)/2 ;
     }
 
 
-    public boolean isSelected(int x,int y){
+    public boolean isSelected(float x,float y){
 
         float distanceX = Math.abs(this.getMidPointX() - x) ;
         float distanceY = Math.abs( this.getMidPointY() - y ) ;

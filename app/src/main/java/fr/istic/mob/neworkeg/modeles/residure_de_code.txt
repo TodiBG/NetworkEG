@@ -1,0 +1,233 @@
+
+APRES L'AVOIR ECRIT J'AI VU PLUTARD QUE CE CODE NE ME SERT PAS DONC LE GARDE ICI AU CAS OU J'EN AURAIS BESOIN PLUTARD.
+
+
+
+
+
+
+
+
+
+// selectedColor = Color.BLUE ;
+            Node.DEFAULT_COLOR = savedInstanceState.getInt("NODE_DEFAULT_COLOR",Node.DEFAULT_COLOR);
+            Connnexion.DEFAULT_COLOR = savedInstanceState.getInt("CONNEXION_DEFAULT_COLOR",Connnexion.DEFAULT_COLOR);
+            /*
+            ArrayList <Integer> LpX = savedInstanceState.getIntegerArrayList("LpX");
+            ArrayList <Integer> LpY = savedInstanceState.getIntegerArrayList("LpY");
+            ArrayList <Integer> Lwidths = savedInstanceState.getIntegerArrayList("Lwidths");
+            ArrayList <Integer> Lcolors = savedInstanceState.getIntegerArrayList("Lcolors");
+            ArrayList <Integer> LlabelSizes = savedInstanceState.getIntegerArrayList("LlabelSizes");
+            ArrayList <String> Llabels = savedInstanceState.getStringArrayList("Llabels");
+             Node node ;
+            for (int i = 0 ;i<LpX.size();i++){
+                node = new Node(LpX.get(i),LpY.get(i)) ;
+                node.setColor(Lcolors.get(i));
+                node.setLabelSize(LlabelSizes.get(i));
+                node.setLabel(Llabels.get(i));
+                mGraph.addNode(node) ;
+            }
+
+            selectedNode = mGraph.getSelectedNode(savedInstanceState.getInt("selectedNodePx"),savedInstanceState.getInt("selectedNodePy") ) ;
+
+            ArrayList <Integer> ListConnDebutX = savedInstanceState.getIntegerArrayList("ListConnDebutX");
+            ArrayList <Integer> ListConnDebutY = savedInstanceState.getIntegerArrayList("ListConnDebutY");
+            ArrayList <Integer> ListConnFinX = savedInstanceState.getIntegerArrayList("ListConnFinX");
+            ArrayList <Integer> ListConnFinY = savedInstanceState.getIntegerArrayList("ListConnFinY");
+            Node debut ;
+            Node fin ;
+            for(int n = 0; n<ListConnDebutX.size();n++){
+                debut = mGraph.getSelectedNode(ListConnDebutX.get(n),ListConnDebutY.get(n)) ;
+                fin = mGraph.getSelectedNode(ListConnFinX.get(n),ListConnFinY.get(n)) ;
+
+                if ((debut != null)&&(fin != null)){
+                    mGraph.addConn( new Connnexion(debut,fin) );
+                }
+            }
+
+            float milieuX =  (savedInstanceState.getInt("selectedConnDebutPx")+savedInstanceState.getInt("selectedConnFinPx"))/2 ;
+            float milieuY = (savedInstanceState.getInt("selectedConnDebutPy")+savedInstanceState.getInt("selectedConnFinPy")) /2 ;
+            selectedConn = mGraph.getSelectedConn (milieuX ,milieuY) ;
+
+
+            */
+
+
+            ////*****************************************************************************************************************************************
+
+
+
+              @Override
+                protected void onSaveInstanceState(@NonNull Bundle outState) {
+                  outState.putInt("Mode",mMode);
+                    outState.putBoolean("optionPopupConnVisible",optionPopupConnVisible);
+                    outState.putBoolean("optionPopupNodeVisible",optionPopupNodeVisible);
+                    outState.putInt("NODE_DEFAULT_COLOR",Node.DEFAULT_COLOR);
+                    outState.putInt("CONNEXION_DEFAULT_COLOR",Connnexion.DEFAULT_COLOR);
+                    /*
+                    //----------------------------------
+                    ArrayList <Integer> LpX = new ArrayList<>();
+                    ArrayList <Integer> LpY = new ArrayList<>();
+                    ArrayList <Integer> Lwidths = new ArrayList<>();
+                    ArrayList <Integer> Lcolors = new ArrayList<>();
+                    ArrayList <Integer> LlabelSizes = new ArrayList<>();
+                    ArrayList <String> Llabels = new ArrayList<>();
+
+                    for (Node node : mGraph.getNoeuds()){
+                        LpX.add(node.getX() );
+                        LpY.add(node.getY());
+                        Lwidths.add(node.getWidth());
+                        Lcolors.add(node.getColor());
+                        LlabelSizes.add(node.getLabelSize());
+                        Llabels.add(node.getLabel());
+                    }
+                    outState.putIntegerArrayList("LpX", LpX);
+                    outState.putIntegerArrayList("Lpy", LpY);
+                    outState.putIntegerArrayList("Lwidths", Lwidths);
+                    outState.putIntegerArrayList("Lcolors",Lcolors );
+                    outState.putIntegerArrayList("Lcolors", Lcolors);
+                    outState.putIntegerArrayList("LlabelSizes", LlabelSizes);
+                    outState.putStringArrayList("Llabels", Llabels);
+
+                    //------ ++++++ ----------------------------------------------
+                    ArrayList <Integer> ListConnDebutX = new ArrayList<>();
+                    ArrayList <Integer> ListConnDebutY = new ArrayList<>();
+                    ArrayList <Integer> ListConnFinX = new ArrayList<>();
+                    ArrayList <Integer> ListConnFinY = new ArrayList<>();
+
+                    for (Connnexion conn:mGraph.getConns()){
+                        ListConnDebutX.add(conn.getDebut().getX() ) ;
+                        ListConnDebutY.add(conn.getDebut().getY() ) ;
+                        ListConnFinX.add(conn.getFin().getX() ) ;
+                        ListConnFinY.add(conn.getFin().getY() ) ;
+                    }
+                    outState.putIntegerArrayList("ListConnDebutX", ListConnDebutX);
+                    outState.putIntegerArrayList("ListConnDebutY", ListConnDebutY);
+                    outState.putIntegerArrayList("ListConnFinX", ListConnFinX);
+                    outState.putIntegerArrayList("ListConnFinY", ListConnFinY);
+
+                   //---------------------------------------------------
+
+                    int selectedConnDebutPx = 0;
+                    int selectedConnDebutPy = 0;
+                    int selectedConnFinPx = 0;
+                    int selectedConnFinPy = 0;
+                    if ( selectedConn != null){
+                        selectedConnDebutPx = selectedConn.getDebut().getX();
+                        selectedConnDebutPy = selectedConn.getDebut().getY();
+                        selectedConnFinPx = selectedConn.getFin().getX();
+                        selectedConnFinPy = selectedConn.getFin().getY();
+                    }
+                    outState.putInt("selectedConnDebutPx",selectedConnDebutPx);
+                    outState.putInt("selectedConnDebutPy",selectedConnDebutPy);
+                    outState.putInt("selectedConnFinPx",selectedConnFinPx);
+                    outState.putInt("selectedConnFinPy",selectedConnFinPy);
+                    //---------------------------------------------------------------------------
+
+                    int selectedNodePx = 0;
+                    int selectedNodePy = 0;
+
+                    if (selectedNode != null){
+                        selectedNodePx = selectedNode.getX();
+                        selectedNodePy = selectedNode.getY();
+                    }
+
+                    outState.putInt("selectedNodePx",selectedNodePx);
+                    outState.putInt("selectedNodePy",selectedNodePy);
+
+
+                    //-----------------------------------------------------
+                */
+                    super.onSaveInstanceState(outState);
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+        //******************************************************************************************************************************
+
+
+
+
+                  savedInstanceState.putBoolean("optionPopupConnVisible",optionPopupConnVisible);
+                   savedInstanceState.putBoolean("optionPopupNodeVisible",optionPopupNodeVisible);
+                   savedInstanceState.putInt("NODE_DEFAULT_COLOR",Node.DEFAULT_COLOR);
+                   savedInstanceState.putInt("CONNEXION_DEFAULT_COLOR",Connnexion.DEFAULT_COLOR);
+
+                   /*
+                       float[]LpX = null ;
+                       float[] LpY = null;
+                       ArrayList<Integer> Lcolors = new ArrayList<>();
+                       ArrayList<Integer> LlabelSizes = new ArrayList<>();
+                       ArrayList<String> Llabels = new ArrayList<>();
+
+                       for (int i = 0 ; i< mGraph.getNoeuds().size();i++){
+                           LpX[i] = mGraph.getNoeuds().get(i).getX();
+                           LpY[i] = mGraph.getNoeuds().get(i).getY();
+                           Lcolors.add( mGraph.getNoeuds().get(i).getColor());
+                           LlabelSizes.add( mGraph.getNoeuds().get(i).getLabelSize());
+                           Llabels.add( mGraph.getNoeuds().get(i).getLabel());
+                       }
+                       savedInstanceState.putFloatArray ("LpX", LpX);
+                       savedInstanceState.putFloatArray("Lpy", LpY);
+                       savedInstanceState.putIntegerArrayList("Lcolors",Lcolors );
+                       savedInstanceState.putIntegerArrayList("Lcolors", Lcolors);
+                       savedInstanceState.putIntegerArrayList("LlabelSizes", LlabelSizes);
+                       savedInstanceState.putStringArrayList("Llabels", Llabels);
+
+                       //------ ++++++ ----------------------------------------------
+                       float[] ListConnDebutX = null;
+                       float[] ListConnDebutY = null;
+                       float[] ListConnFinX = null;
+                       float[] ListConnFinY = null;
+
+                       for (int i = 0 ; i< mGraph.getConns().size();i++){
+                           ListConnDebutX[i ]= mGraph.getConns().get(i).getDebut().getX() ;
+                           ListConnDebutY[i] = mGraph.getConns().get(i).getDebut().getY() ;
+                           ListConnFinX[i] = mGraph.getConns().get(i).getFin().getX() ;
+                           ListConnFinY[i] = mGraph.getConns().get(i).getFin().getY() ;
+                       }
+                       savedInstanceState.putFloatArray("ListConnDebutX", ListConnDebutX);
+                       savedInstanceState.putFloatArray("ListConnDebutY", ListConnDebutY);
+                       savedInstanceState.putFloatArray("ListConnFinX", ListConnFinX);
+                       savedInstanceState.putFloatArray("ListConnFinY", ListConnFinY);
+
+                      //---------------------------------------------------
+
+                       float selectedConnDebutPx = 0;
+                       float selectedConnDebutPy = 0;
+                       float selectedConnFinPx = 0;
+                       float selectedConnFinPy = 0;
+                       if ( selectedConn != null){
+                           selectedConnDebutPx = selectedConn.getDebut().getX();
+                           selectedConnDebutPy = selectedConn.getDebut().getY();
+                           selectedConnFinPx = selectedConn.getFin().getX();
+                           selectedConnFinPy = selectedConn.getFin().getY();
+                       }
+                       savedInstanceState.putFloat("selectedConnDebutPx",selectedConnDebutPx);
+                       savedInstanceState.putFloat("selectedConnDebutPy",selectedConnDebutPy);
+                       savedInstanceState.putFloat("selectedConnFinPx",selectedConnFinPx);
+                       savedInstanceState.putFloat("selectedConnFinPy",selectedConnFinPy);
+                       //---------------------------------------------------------------------------
+
+                       float selectedNodePx = 0;
+                       float selectedNodePy = 0;
+
+                       if (selectedNode != null){
+                           selectedNodePx = selectedNode.getX();
+                           selectedNodePy = selectedNode.getY();
+                       }
+
+                       savedInstanceState.putFloat("selectedNodePx",selectedNodePx);
+                       savedInstanceState.putFloat("selectedNodePy",selectedNodePy);
+
+
+                    */

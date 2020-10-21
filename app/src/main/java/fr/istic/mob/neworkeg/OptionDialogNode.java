@@ -24,7 +24,7 @@ public class OptionDialogNode extends Dialog {
     public OptionDialogNode(MainActivity activity) {
         super(activity);
         this.activity = activity;
-        this.activity.optionPopupVisible = true;
+        this.activity.optionPopupNodeVisible = true;
         this.setCanceledOnTouchOutside(false);
     }
 
@@ -49,7 +49,7 @@ public class OptionDialogNode extends Dialog {
             @Override
             public void onClick(View v) {
                 activity.selectedNode.setLabel(labelInput.getText().toString());
-                activity.optionPopupVisible = false;
+                activity.optionPopupNodeVisible = false;
                 activity.selectedNode = null;
                 activity.supportView.invalidate();
                 dismiss();
@@ -59,7 +59,7 @@ public class OptionDialogNode extends Dialog {
         no.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                activity.optionPopupVisible = false;
+                activity.optionPopupNodeVisible = false;
                 dismiss();
             }
         });
@@ -82,7 +82,7 @@ public class OptionDialogNode extends Dialog {
             @Override
             public void onClick(View v) {
                     activity.myDraw.mGraph.removeNode(activity.selectedNode);
-                    activity.optionPopupVisible = false;
+                    activity.optionPopupNodeVisible = false;
                     activity.supportView.invalidate();
                     dismiss();
             }

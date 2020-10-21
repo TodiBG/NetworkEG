@@ -44,8 +44,6 @@ public class DrawableGraph extends Drawable {
     public DrawableGraph(Graph graph) {
         this.mGraph = graph;
 
-        graph.addRandomConns();
-
         mModePaint = new Paint();
         mModePaint.setColor(Color.DKGRAY);
 
@@ -75,10 +73,10 @@ public class DrawableGraph extends Drawable {
 
     public void drawNode(Node node) {
         mModePaint.setColor(node.getColor());
-        int left = node.getX()-2*node.getWidth() ;
-        int right = node.getX()+2*node.getWidth() ;
-        int top = node.getY()-node.getWidth() ;
-        int bottom = node.getY()+node.getWidth() ;
+        float left = node.getX()-2*node.getWidth() ;
+        float right = node.getX()+2*node.getWidth() ;
+        float top = node.getY()-node.getWidth() ;
+        float bottom = node.getY()+node.getWidth() ;
 
         mCanvas.drawRect(left, top, right, bottom, mModePaint);
 
@@ -101,8 +99,8 @@ public class DrawableGraph extends Drawable {
         }
         mNodeLapelPaint.setTextSize(node.getLabelSize());
         //Afficher le nom de l'objet
-        int xPos =  node.getX() - (int) (mNodeLapelPaint.measureText(node.getLabel()) / 2);
-        int yPos =  (int) (node.getY() - ((mNodeLapelPaint.descent() + mNodeLapelPaint.ascent()) / 2));
+        float xPos =  node.getX() - (int) (mNodeLapelPaint.measureText(node.getLabel()) / 2);
+        float yPos =  (int) (node.getY() - ((mNodeLapelPaint.descent() + mNodeLapelPaint.ascent()) / 2));
 
         mCanvas.drawText(node.getLabel(), xPos, yPos, mNodeLapelPaint);
     }

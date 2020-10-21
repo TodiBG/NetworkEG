@@ -26,7 +26,7 @@ public class OptionDialogConn extends Dialog {
     public OptionDialogConn(MainActivity activity) {
         super(activity);
         this.activity = activity;
-        this.activity.optionPopupVisible = false;
+        this.activity.optionPopupConnVisible = false;
     }
 
 
@@ -57,7 +57,7 @@ public class OptionDialogConn extends Dialog {
         no.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                activity.optionPopupVisible = false;
+                activity.optionPopupConnVisible = false;
                 activity.supportView.invalidate();
                 dismiss();
             }
@@ -67,7 +67,7 @@ public class OptionDialogConn extends Dialog {
         removeConnBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                activity.optionPopupVisible = false;
+                activity.optionPopupConnVisible = false;
                 MainActivity.mGraph.getConns().remove(MainActivity.selectedConn);
                 activity.supportView.invalidate();
                 dismiss();

@@ -6,18 +6,18 @@ import java.util.Collection;
 import java.util.Random;
 
 public class Node {
-    private int x;
-    private int y;
+    private float x;
+    private float y;
     private String mLabel;
     private int mLabelSize;
     private int mColor;
-    private int width;
+    private float width;
 
     public static int DEFAULT_COLOR = Color.BLUE;
     public static int DEFAULT_RADIUS = 45;
     public static String DEFAULT_LABEL = "";
 
-    public Node(int x, int y) {
+    public Node(float x, float y) {
         this.x = x;
         this.y = y;
         this.mColor = DEFAULT_COLOR;
@@ -25,7 +25,7 @@ public class Node {
         setRadiaus();
     }
 
-    public Node(int x, int y, int color) {
+    public Node(float x, float y, int color) {
         this.x = x;
         this.y = y;
         this.mColor = color;
@@ -33,7 +33,7 @@ public class Node {
         setRadiaus();
     }
 
-    public Node(int x, int y, String label) {
+    public Node(float x, float y, String label) {
         this.x = x;
         this.y = y;
         this.mColor = DEFAULT_COLOR;
@@ -41,7 +41,7 @@ public class Node {
         setRadiaus();
     }
 
-    public Node(int x, int y, String label, int color) {
+    public Node(float x, float y, String label, int color) {
         this.x = x;
         this.y = y;
         this.mLabel = label;
@@ -49,19 +49,19 @@ public class Node {
         setRadiaus();
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(int Y) {
+    public void setY(float Y) {
         this.y = Y;
     }
 
@@ -98,7 +98,7 @@ public class Node {
         this.mColor = color;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
@@ -158,8 +158,8 @@ public class Node {
      // Vérifier si un objet(noeud)  est trop proche de l'objet courant
 
     public boolean overlap(Node n) {
-        int margY = Math.abs(y - n.getY());
-        int margX = Math.abs(x - n.getX());
+        float margY = Math.abs(y - n.getY());
+        float margX = Math.abs(x - n.getX());
         return (margX < (this.getWidth()) + (n.getWidth())) && (margY < (this.getWidth()) + (n.getWidth()));
     }
 
@@ -173,7 +173,7 @@ public class Node {
 
      // Verifier si un objet du graphe est trop proche d'une position
 
-    public boolean isClose(int x, int y) {
+    public boolean isClose(float x, float y) {
         return this.overlap(new Node(x, y));
     }
 

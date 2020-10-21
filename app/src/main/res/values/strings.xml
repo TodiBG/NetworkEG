@@ -25,11 +25,13 @@
     <string name="item_help">Help </string>
     <string name="setting"> Setting </string>
 
-
     <string name="reading_mode_info"> You are on reading mode  !</string>
     <string name="editting_mode_info"> You are on editting mode ! </string>
     <string name="resetting_mode_info"> You have reset all ! </string>
     <string name="further_mode_info"> further modes are not defined yet ! </string>
+    <string name="objetNonDeplacableEnModeCreation"> Object can be moved only if you are on READING MODE ! </string>
+    <string name="passOnCreationMode"> Ativate EDITTING MODE for creation or editting ! </string>
+
     <string name="firstNode"> Object 1 : </string>
     <string name="secondNode"> Object 2 : </string>
     <string name="remove"> Remove </string>
@@ -37,5 +39,15 @@
 
 
     <string name="help_pup_title">Help </string>
+
+    <string name="HelpText">\n\n\nThe purpose of this application is to connect the objects of an apartment.\n
+Its menu is composed of options:\n
+Creation mode\n
+The creation mode allows you to make objects (presented as a rectangle) as well as to choose the objects that will be connected between them by touching these two objects.
+A long click on an object allows you to open the parameters of this object you can change the color the name as well as delete it, it is also the case of a connection.
+
+Playback mode\n This mode allows you to have a preview of the plan of the apartment and its objects without being able to modify them.\n
+The other options is the representative of the contains that will be developed in V2.
+Help allows to learn how to use the application.\n\n\n</string>
 
 </resources>

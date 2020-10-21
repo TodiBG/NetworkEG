@@ -17,7 +17,6 @@ public class OptionDialogHelp extends Dialog {
     public OptionDialogHelp(MainActivity activity) {
         super(activity);
         this.activity = activity;
-        this.activity.optionPopupVisible = true;
         this.setCanceledOnTouchOutside(false);
     }
 
@@ -29,8 +28,7 @@ public class OptionDialogHelp extends Dialog {
         helpClose =  (Button)findViewById(R.id.helpClose) ;
 
         helpClose.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) { dismiss();
-                MainActivity.optionPopupVisible = false; }
+            public void onClick(View v) { dismiss(); }
         });
     }
 }
