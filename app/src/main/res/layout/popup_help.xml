@@ -11,10 +11,10 @@
     android:weightSum="1">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:minHeight="300dp">
+        android:layout_height="wrap_content"
+        android:minHeight="300dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView2"
@@ -31,31 +31,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/HelpText" />
+
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginVertical="25dp">
+        android:layout_marginVertical="25dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/helpClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:drawable/ic_menu_close_clear_cancel"
             android:text="@string/close"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 
 </LinearLayout>
