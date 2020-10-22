@@ -2,6 +2,7 @@ package fr.istic.mob.neworkeg;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
@@ -53,8 +55,46 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initReseau() ;
+
+        if (savedInstanceState == null){
+            initReseau() ;
+        }else {
+            supportView = (ImageView) findViewById(R.id.imageViewPlan);
+            myDraw = new DrawableGraph(mGraph);
+            supportView.setImageDrawable(myDraw);
+
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            int deviceWidth =  metrics.widthPixels;
+            int deviceHeigt =  metrics.heightPixels;
+            float pX = supportView.getX() ;
+            float pY = supportView.getY() ;
+
+            float interval = 0 ;
+            for( Node n:mGraph.getNoeuds()){
+
+                interval = n.getX() ;
+                n.setX(n.getY()) ;
+                n.setX(interval) ;
+
+                if( n.getX() > 0.8*deviceWidth ){ n.setX((8*deviceWidth)/10) ;}
+                if( n.getY()  > 0.8*deviceHeigt ){ n.setY((8*deviceHeigt)/10) ;}
+            }
+
+            mMode = savedInstanceState.getInt("Mode") ;
+            if( mMode == 1){ supportView.setOnTouchListener(mModeLecture ); }
+            else if(mMode == 2){ supportView.setOnTouchListener(mModeCreation ); }
+        }
+
     }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        savedInstanceState.putInt("Mode",mMode);
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
 
     private void initReseau(){
         mGraph = new Graph(0);
