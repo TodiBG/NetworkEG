@@ -24,7 +24,7 @@
     <string name="further_mode"> Autres options </string>
     <string name="objetNonDeplacableEnModeCreation"> Les objets ne neuvent être delpacés seulement qu\'en MODE LECTURE ! </string>
     <string name="passOnCreationMode"> Activez le MODE EDITION pour créer ou modifier des objects ! </string>
-
+    <string name="creationNodeLabel">Création de nouvel objet </string>
     <string name="item_help">Aide </string>
     <string name="setting"> Paramàtre </string>
 
@@ -37,6 +37,15 @@
     <string name="secondNode"> Objet 2 : </string>
     <string name="remove"> Supprimer </string>
     <string name="connDefautColor">Couleurs </string>
+    <string name="screemshot">Partager la capture</string>
+    <string name="save_network">sauvégarder</string>
+    <string name="save_network_message"> Le réseau est sauvégardé, vous pouvez l\'importer plutard.</string>
+    <string name="import_network">import un réseau</string>
+    <string name="creationLabel">Nommez le noveau réseau </string>
+    <string name="network_name">Nom du réseau </string>
+    <string name="create">Créer </string>
+    <string name="new_object_name">Nom de l\'objet</string>
+
 
 
     <string name="help_pup_title">Aide </string>

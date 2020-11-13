@@ -12,7 +12,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import static fr.istic.mob.neworkeg.modeles.Connnexion.CONN_WIDTH;
+import static fr.istic.mob.neworkeg.modeles.Connexion.CONN_WIDTH;
 
 
 public class DrawableGraph extends Drawable {
@@ -27,13 +27,13 @@ public class DrawableGraph extends Drawable {
 
     private Path mLinePath = new Path();
     public Graph mGraph;
-    private Connnexion mTempConn = null; // connexion temporaire pour suivre les mouvements
+    private Connexion mTempConn = null; // connexion temporaire pour suivre les mouvements
 
-    public Connnexion getTempConn() {
+    public Connexion getTempConn() {
         return mTempConn;
     }
 
-    public void setTempConn(Connnexion tempConn) {
+    public void setTempConn(Connexion tempConn) {
         this.mTempConn = tempConn;
     }
 
@@ -121,7 +121,7 @@ public class DrawableGraph extends Drawable {
     }
 
     public void drawConns() {
-        for (Connnexion conns : mGraph.getConns()) {
+        for (Connexion conns : mGraph.getConns()) {
             drawConn(conns);
         }
         if (this.mTempConn != null) {
@@ -130,13 +130,15 @@ public class DrawableGraph extends Drawable {
     }
 
     //Tracer une ligne de connexion
-    public void drawConn(Connnexion conn) {
-        mConnPaint.setColor(conn.getColor());
-        mCanvas.drawPath(conn.getPath(), mWhitePaint);
-        mCanvas.drawPath(conn.getPath(), mConnPaint);
+    public void drawConn(Connexion conn) {
+        if (conn != null ) {
+            mConnPaint.setColor(conn.getColor());
+            mCanvas.drawPath(conn.getPath(), mWhitePaint);
+            mCanvas.drawPath(conn.getPath(), mConnPaint);
 
-        //Dessine le milieu de la connexion
-        mCanvas.drawCircle(conn.getMidPointX(),conn.getMidPointY(), conn.MID_POINT_RADIUS, mConnPaint);
+            //Dessine le milieu de la connexion
+            mCanvas.drawCircle(conn.getMidPointX(), conn.getMidPointY(), conn.MID_POINT_RADIUS, mConnPaint);
+        }
     }
 
     @Override

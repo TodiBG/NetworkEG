@@ -1,7 +1,15 @@
 package fr.istic.mob.neworkeg.modeles;
 
 import android.graphics.Color;
+import android.os.Build;
+import android.util.ArrayMap;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
+import com.google.gson.Gson;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -10,13 +18,15 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
+import fr.istic.mob.neworkeg.MainActivity;
+
 public class Graph {
 
     public int mMaxX = 600;
     public int mMaxY = 800;
     private List<Node> mNodes = new ArrayList<Node>();/*Les nodes du graphe*/
     //Les connexions qui reliant les nodes
-    private List<Connnexion> mConns = new ArrayList<Connnexion>();
+    private List<Connexion> mConns = new ArrayList<Connexion>();
     public static List<Integer> mNodeColors = new ArrayList<>();/*Les couleurs possibles pour les nodes*/
 
     /**
@@ -53,32 +63,25 @@ public class Graph {
     }
 
     /**
-     * Constructeur avec le nombre de nodes de depart
+     * Constructeur avec la liste de noeud de depart
      *
-     * @param n
+     * @param nodeList provenant de la base données
      */
-    public Graph(int n) {
-        initmNodeColors();
-        Random rand = new Random();
-        for (int i = 0; i < n; i++) {
-            int x = Node.getRandomCoord(mMaxX);
-            int y = Node.getRandomCoord(mMaxY);
-            Node node = new Node(x, y);
+    public Graph(List<Node> nodeList ) {
+        this.mNodes = nodeList ;
+        System.out.println(mNodes);
 
-            node.setColor(getRandomColor());
-            int num = getNoeuds().size() + 1;
-            node.setLabel("" + num);
-            boolean add = addNode(node);
-            while (!add) {
-                x = Node.getRandomCoord(mMaxX);
-                y = Node.getRandomCoord(mMaxY);
-                node = new Node(x, y);
-                node.setColor(getRandomColor());
-                num = getNoeuds().size() + 1;
-                node.setLabel("" + num);
-                add = addNode(node);
-            }
+       /* List<Connexion> connexionsList = MainActivity.connexionViewModel.getAllConnexions() ;
+        Connexion nc = null ;
+        for (Connexion c: connexionsList){
+            Node n1 =  MainActivity.nodeViewModel.getNodeById(c.getDebutNodeId()) ;
+            Node n2 =  MainActivity.nodeViewModel.getNodeById(c.getFinNodeId()) ;
+            nc = new Connexion(n1,n2) ;
+            nc.setColor(c.getColor());
+            addConn(nc) ;
         }
+
+        */
     }
 
     /**
@@ -106,9 +109,13 @@ public class Graph {
     /**
      * @return ArrayList de toutes les connexions
      */
-    public List<Connnexion> getConns() {
+    public List<Connexion> getConns() {
         return mConns;
     }
+    public void setConns(List<Connexion> connexions) {
+         mConns = connexions;
+    }
+
 
     /**
      * @return La liste de toutes couleurs disponibles
@@ -143,6 +150,14 @@ public class Graph {
             }
         }
         if (!overlap) {
+
+            //long id= MainActivity.nodeViewModel.insert(node);
+            int lastId = mNodes.size() ;
+            if(lastId == 0){node.setId(1);}
+            else{
+                node.setId(mNodes.get(lastId-1).getId()+1);
+            }
+
             this.mNodes.add(node);
         }
         return !overlap; // prouve que le node à bien de l'espace
@@ -155,7 +170,7 @@ public class Graph {
      * @param y
      * @return
      */
-    public Node getSelectedNode(int x, int y) {
+    public Node getSelectedNode(float x, float y) {
         Node node = new Node(x, y);
         Node foundNode = null ;
         Iterator<Node> i = mNodes.iterator();
@@ -164,9 +179,33 @@ public class Graph {
             if (Node.overlap(n, node)) {
                 foundNode = n;
             }
+
+            System.out.println("X: "+x+"---> "+n.getX());
+            System.out.println("Y: "+y+"---> "+n.getY());
         }
+
+
         return foundNode ;
     }
+
+    public Node getNodeById(long Id) {
+        Node foundNode = null;
+        Iterator<Node> i = mNodes.iterator();
+        while (i.hasNext()) {
+            Node n = (Node) i.next();
+            if (n.getId() == Id) {
+                foundNode = n;
+            }
+
+            //System.out.println("X: "+x+"---> "+n.getX());
+            //System.out.println("Y: "+y+"---> "+n.getY());
+        }
+
+
+        return foundNode ;
+    }
+
+
 
     /**
      * Ajoute un nouveau Node quand c'est possible
@@ -188,8 +227,19 @@ public class Graph {
             }
         }
         if (!overlap) {
+            long id= MainActivity.nodeViewModel.insert(node);
+            node.setId(id);
+            System.out.println("Node Id ==   "+node.getId());
             this.mNodes.add(node);
         }
+
+
+
+        System.out.println("Node Id ==   "+node.getId());
+
+
+
+
         return !overlap; // prouve que le node à bien de l'espace
     }
 
@@ -201,6 +251,7 @@ public class Graph {
     public void removeNode(Node node) {
         try {
             removeNodeConns(node);
+            MainActivity.nodeViewModel.delete(node.getId());
             mNodes.remove(node);
         } catch (ConcurrentModificationException e) {
             removeNode(node); // passe 1 fois sur 4 donc executé plusieurs fois par appel
@@ -213,8 +264,9 @@ public class Graph {
      * @param node
      */
     public void removeNodeConns(Node node) {
-        for (Connnexion conn : mConns) {
+        for (Connexion conn : mConns) {
             if (conn.contains(node)) {
+                MainActivity.nodeViewModel.delete(node.getId());
                 mConns.remove(conn);
             }
         }
@@ -238,9 +290,17 @@ public class Graph {
      *
      * @param conn
      */
-    public void addConn(Connnexion conn) {
-        if (!Node.overlap(conn.getDebut(), conn.getFin()))
+    public void addConn(Connexion conn) {
+        if (!Node.overlap(conn.getDebut(), conn.getFin())){
+            //long id = MainActivity.connexionViewModel.insertOrUpdate(conn);
+            int lastId = mConns.size() ;
+            if(lastId == 0){
+                conn.setId(1);
+            }else {
+                conn.setId( mConns.get(lastId-1).getId()+1 );
+            }
             this.mConns.add(conn);
+        }
     }
 
     /**
@@ -255,7 +315,7 @@ public class Graph {
             Node n2 = getNoeuds().get(index2);
             if (!Node.overlap(n1, n2)) {
                 Log.d("XXX", "add conn ");
-                this.mConns.add(new Connnexion(n1, n2));
+                this.mConns.add(new Connexion(n1, n2));
             }
         }
 
@@ -268,10 +328,10 @@ public class Graph {
      * @param y
      * @return conn
      */
-    public Connnexion getSelectedConn(float x, float y) {
-        ListIterator<Connnexion> it = mConns.listIterator(mConns.size());
+    public Connexion getSelectedConn(float x, float y) {
+        ListIterator<Connexion> it = mConns.listIterator(mConns.size());
         while (it.hasPrevious()) {
-            Connnexion conn = it.previous();
+            Connexion conn = it.previous();
             if (conn.isSelected(x,y)) {
                 return conn;
             }
@@ -284,7 +344,7 @@ public class Graph {
      *
      * @param conn
      */
-    public void removeConn(Connnexion conn) {
+    public void removeConn(Connexion conn) {
         mConns.remove(conn);
     }
 
@@ -317,11 +377,11 @@ public class Graph {
      * @param nodeBegin si nodeBegin n'est lie a aucun autre node on retourne une liste vide
      */
 
-    public List<Connnexion> getConnOutOfMe(Node nodeBegin) {
-        List<Connnexion> connOutOfMe = new ArrayList<Connnexion>();
+    public List<Connexion> getConnOutOfMe(Node nodeBegin) {
+        List<Connexion> connOutOfMe = new ArrayList<Connexion>();
         int i = 0;
         int e = 0;
-        for (Connnexion conn : mConns) {
+        for (Connexion conn : mConns) {
             if (conn.containsbegin(nodeBegin))  {
                 connOutOfMe.add(conn);
                 e++;
@@ -331,5 +391,14 @@ public class Graph {
         return connOutOfMe;
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public String export() throws JSONException {
+
+        ArrayMap data  = new  ArrayMap() ;
+        data.put("nodes",mNodes) ;
+        data.put("connexions",mConns) ;
+        return new Gson().toJson(data) ;
+    }
 
 }

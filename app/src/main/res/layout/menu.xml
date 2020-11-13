@@ -6,6 +6,9 @@
     <item android:id="@+id/item_read" android:title="@string/reading_mode"></item>
     <item android:id="@+id/item_edit" android:title="@string/editting_mode"></item>
     <item android:id="@+id/item_reset" android:title="@string/resetting_mode"></item>
+    <item android:id="@+id/item_save" android:title="@string/save_network"></item>
+    <item android:id="@+id/item_import" android:title="@string/import_network"></item>
+    <item android:id="@+id/item_screemshot" android:title="@string/screemshot"></item>
     <item android:id="@+id/item_further" android:title="@string/further_mode"></item>
     <item android:id="@+id/item_help" android:title="@string/item_help"> </item>
 

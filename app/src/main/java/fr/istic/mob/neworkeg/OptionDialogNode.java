@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class OptionDialogNode extends Dialog {
+import fr.istic.mob.neworkeg.database.NetworkDB;
 
+public class OptionDialogNode extends Dialog {
+    private NetworkDB dataBase ;
     public MainActivity activity;
     public Dialog dialog;
     private Button yes;
@@ -31,6 +33,9 @@ public class OptionDialogNode extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dataBase = NetworkDB.getInstance(activity) ;
+
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.popup_node);
 
@@ -48,7 +53,6 @@ public class OptionDialogNode extends Dialog {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.selectedNode.setLabel(labelInput.getText().toString());
                 activity.optionPopupNodeVisible = false;
                 activity.selectedNode = null;
                 activity.supportView.invalidate();
@@ -81,10 +85,9 @@ public class OptionDialogNode extends Dialog {
         deleteNode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    activity.myDraw.mGraph.removeNode(activity.selectedNode);
-                    activity.optionPopupNodeVisible = false;
-                    activity.supportView.invalidate();
-                    dismiss();
+                activity.optionPopupNodeVisible = false;
+                activity.supportView.invalidate();
+                dismiss();
             }
         });
     }

@@ -35,6 +35,15 @@
     <string name="secondNode"> Object 2 : </string>
     <string name="remove"> Remove </string>
     <string name="connDefautColor">Set default color </string>
+    <string name="save_network">save network</string>
+    <string name="save_network_message">network is saved, you can import it later.</string>
+    <string name="import_network">import network</string>
+    <string name="screemshot">Share screemshot </string>
+    <string name="creationLabel">Type the new network\'s name </string>
+    <string name="network_name">network name </string>
+    <string name="create">create </string>
+    <string name="new_object_name">New object\'s name </string>
+    <string name="creationNodeLabel">New object creation </string>
 
 
     <string name="help_pup_title">Help </string>

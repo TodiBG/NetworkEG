@@ -2,50 +2,70 @@ package fr.istic.mob.neworkeg.modeles;
 
 import android.graphics.Color;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
+@Entity
 public class Node {
-    private float x;
-    private float y;
-    private String mLabel;
-    private int mLabelSize;
-    private int mColor;
-    private float width;
+
+    @PrimaryKey(autoGenerate = true) private long id ;
+    @ColumnInfo(name = "x") private float x;
+    @ColumnInfo(name = "y") private float y;
+    @ColumnInfo(name = "label") private String label;
+    @ColumnInfo(name = "labelsize") private int labelSize;
+    @ColumnInfo(name = "color") private int color;
+    @ColumnInfo(name = "width") private float width;
 
     public static int DEFAULT_COLOR = Color.BLUE;
     public static int DEFAULT_RADIUS = 45;
     public static String DEFAULT_LABEL = "";
 
+    public long getId(){ return this.id ;}
+    public void setId(long Id){this.id = Id ;}
+
+    @Ignore
+    List<Connexion> listConnexion = null;
+
+    public Node(long id, float x, float y, String label, int color) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.label = label;
+        this.color = color;
+        this.labelSize = labelSize ;
+        setRadiaus();
+    }
+
+    @Ignore
     public Node(float x, float y) {
         this.x = x;
         this.y = y;
-        this.mColor = DEFAULT_COLOR;
-        this.mLabel = DEFAULT_LABEL;
+        this.color = DEFAULT_COLOR;
+        this.label = DEFAULT_LABEL;
         setRadiaus();
     }
 
-    public Node(float x, float y, int color) {
+    @Ignore
+    public Node(float x, float y, int color, String label) {
         this.x = x;
         this.y = y;
-        this.mColor = color;
-        this.mLabel = DEFAULT_LABEL;
+        this.color = color;
+        this.label = label;
         setRadiaus();
     }
 
+    @Ignore
     public Node(float x, float y, String label) {
         this.x = x;
         this.y = y;
-        this.mColor = DEFAULT_COLOR;
-        this.mLabel = label;
-        setRadiaus();
-    }
-
-    public Node(float x, float y, String label, int color) {
-        this.x = x;
-        this.y = y;
-        this.mLabel = label;
-        this.mColor = color;
+        this.color = DEFAULT_COLOR;
+        this.label = label;
         setRadiaus();
     }
 
@@ -66,15 +86,15 @@ public class Node {
     }
 
     public String getLabel() {
-        return this.mLabel;
+        return this.label;
     }
 
     public int getLabelSize() {
-        return mLabelSize;
+        return labelSize;
     }
 
     public void setLabelSize(int size) {
-        this.mLabelSize = size;
+        this.labelSize = size;
     }
 
     public String getShortLabel() {
@@ -86,27 +106,30 @@ public class Node {
     }
 
     public void setLabel(String label) {
-        this.mLabel = label;
+        this.label = label;
         setRadiaus();
     }
 
     public int getColor() {
-        return mColor;
+        return color;
     }
 
     public void setColor(int color) {
-        this.mColor = color;
+        this.color = color;
     }
 
     public float getWidth() {
         return width;
     }
 
+    public void setWidth(float width) {
+        this. width = width;
+    }
+
     /**
      * definir la taille de l'objet en fonction son nom
      */
     public void setRadiaus() {
-
         this.width = DEFAULT_RADIUS ;
 
        /*
@@ -135,7 +158,7 @@ public class Node {
     public void upadte(int x, int y, int color) {
         this.x = x;
         this.y = y;
-        this.mColor = color;
+        this.color = color;
     }
 
     /**
@@ -149,8 +172,8 @@ public class Node {
     public void upadte(int x, int y, String label, int color) {
         this.x = x;
         this.y = y;
-        this.mLabel = label;
-        this.mColor = color;
+        this.label = label;
+        this.color = color;
         setRadiaus();
     }
 
@@ -160,6 +183,9 @@ public class Node {
     public boolean overlap(Node n) {
         float margY = Math.abs(y - n.getY());
         float margX = Math.abs(x - n.getX());
+
+        if(x==n.getX() && y == n.getY() ){return true ;}
+
         return (margX < (this.getWidth()) + (n.getWidth())) && (margY < (this.getWidth()) + (n.getWidth()));
     }
 
@@ -191,7 +217,7 @@ public class Node {
      * transformer l'objet en String
      */
     public String toString() {
-        return "Node : {(" + x + "," + y + ")," + mLabel + ", color:" + mColor + "}";
+        return "Node => { id:"+id+", position:(" + x + "," + y + "), label:" + label + ", color:" + color + "}";
     }
 
     /**

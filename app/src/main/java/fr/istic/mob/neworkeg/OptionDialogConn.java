@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.istic.mob.neworkeg.modeles.Connnexion;
+import fr.istic.mob.neworkeg.modeles.Connexion;
 
 public class OptionDialogConn extends Dialog {
 
@@ -42,14 +42,14 @@ public class OptionDialogConn extends Dialog {
         secondNode.setText(activity.selectedConn.getFin().getLabel());
         defautColorBtn = (Button) findViewById(R.id.connDefautColorBtn) ;
 
-        List<Connnexion> Connnexions = new ArrayList<Connnexion>();
-        Connnexions = activity.getSelectConn();
+        List<Connexion> connexions = new ArrayList<Connexion>();
+        connexions = activity.getSelectConn();
 
         chooseColor = (Button) findViewById(R.id.connsetcolor);
         no = (Button) findViewById(R.id.connclose);
 
         List<String> categories = new ArrayList<String>();
-        for (Connnexion conn : Connnexions) {
+        for (Connexion conn : connexions) {
             categories.add(conn.getLabel());
             //categories.add(" -- > " + conn.getFin().getLabel());
         }
@@ -68,6 +68,7 @@ public class OptionDialogConn extends Dialog {
 
             public void onClick(View v) {
                 activity.optionPopupConnVisible = false;
+                MainActivity.connexionViewModel.delete(MainActivity.selectedConn.getId());
                 MainActivity.mGraph.getConns().remove(MainActivity.selectedConn);
                 activity.supportView.invalidate();
                 dismiss();
