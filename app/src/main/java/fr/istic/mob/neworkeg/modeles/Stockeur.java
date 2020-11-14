@@ -18,14 +18,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 public class Stockeur {
-    private static File createOrGetFile(File destination, String fileName, String folderName){
+    private static File createOrGetFile(File destination, String folderName, String fileName){
         File folder = new File(destination, folderName);
         folder.mkdirs() ;
-        if(folder.isDirectory()){System.out.println("XXX PPPPPPPPPP"); }
-        else{ System.out.println("XXX 55555555555555555555");}
-
-
-
         return new File(folder, fileName);
     }
 
@@ -57,9 +52,7 @@ public class Stockeur {
 
     private static void writeOnFile(Context context, String text, File file){
 
-        try {
-            if(file.getParentFile().mkdirs()){ System.out.println("xxxx xxxxx");}
-            else{ System.out.println("xxxx yyyyyyyyy");}
+        try { file.getParentFile().mkdirs() ;
 
             FileOutputStream fos = new FileOutputStream(file);
             Writer w = new BufferedWriter(new OutputStreamWriter(fos));
@@ -82,13 +75,14 @@ public class Stockeur {
 
 
 
-    public static String getDataFromStorage(File rootDestination, Context context, String fileName, String folderName){
-        File file = createOrGetFile(rootDestination, fileName, folderName);
+    public static String getDataFromStorage(File rootDestination, Context context, String folderName, String fileName){
+        File file = createOrGetFile(rootDestination, folderName, fileName);
+        System.out.println("File : "+file);
         return readOnFile(context, file);
     }
 
-    public static void setDataInStorage(File rootDestination, Context context, String fileName, String folderName, String text){
-        File file = createOrGetFile(rootDestination, fileName, folderName);
+    public static void setDataInStorage(File rootDestination, Context context,String folderName, String fileName,  String text){
+        File file = createOrGetFile(rootDestination, folderName, fileName);
         writeOnFile(context, text, file);
     }
 

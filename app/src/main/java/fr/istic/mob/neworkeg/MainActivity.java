@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,21 +20,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModelProviders;
 
-import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.istic.mob.neworkeg.database.dao.ConnexionViewModel;
-import fr.istic.mob.neworkeg.database.dao.NodeViewModel;
 import fr.istic.mob.neworkeg.modeles.Connexion;
 import fr.istic.mob.neworkeg.modeles.DrawableGraph;
 import fr.istic.mob.neworkeg.modeles.Fonction;
@@ -67,33 +60,31 @@ public class MainActivity extends AppCompatActivity {
     public static Graph mGraph;
     int mMode = 0 ;
 
-    public static NodeViewModel nodeViewModel ;
-    public static ConnexionViewModel  connexionViewModel  ;
-
     public static  String NETWORK_NAME = "";
     private static final String FOLDERNAME = "Sauvegardes";
+    public static  String TEMP_FOLDER = "temp";
+    private static final String TEMP_FILE = "temp_network";
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
-        nodeViewModel = ViewModelProviders.of(this).get(NodeViewModel.class) ;
-        connexionViewModel = ViewModelProviders.of(this).get(ConnexionViewModel.class) ;
-        nodeList = nodeViewModel.getAllNodes();
+        setContentView(R.layout.activity_main);
+
         networkNameTextView = (TextView)findViewById(R.id.networt_name);
         networkNameTextView.setText(NETWORK_NAME);
+        supportView = (ImageView) findViewById(R.id.imageViewPlan);
 
-        if (savedInstanceState == null){
-            mGraph = new Graph(nodeList);
-            myDraw = new DrawableGraph(mGraph);
-            supportView = (ImageView) findViewById(R.id.imageViewPlan);
-            supportView.setImageDrawable(myDraw);
-            supportView.setOnTouchListener(mModeLecture );
-            List<Connexion> connexionsList = MainActivity.connexionViewModel.getAllConnexions() ;
-            updateGraph(connexionsList) ;
+        nodeList = new ArrayList<>() ;
+        List<Connexion> connexionsList = new ArrayList<>() ;
+        mGraph = new Graph(nodeList);
+        myDraw = new DrawableGraph(mGraph);
+        supportView.setImageDrawable(myDraw);
+        supportView.setOnTouchListener(mModeLecture );
+        updateGraph(connexionsList) ;
 
-        }else {
+        if (savedInstanceState != null){
             /*
             supportView = (ImageView) findViewById(R.id.imageViewPlan);
             myDraw = new DrawableGraph(mGraph);
@@ -116,20 +107,29 @@ public class MainActivity extends AppCompatActivity {
                 if( n.getX() > 0.8*deviceWidth ){ n.setX((8*deviceWidth)/10) ;}
                 if( n.getY()  > 0.8*deviceHeigt ){ n.setY((8*deviceHeigt)/10) ;}
             }
+            */
+
+            readFromStorage(TEMP_FOLDER,TEMP_FILE+".json");
+            NETWORK_NAME = savedInstanceState.getString("tempNetwork") ;
+            networkNameTextView.setText(savedInstanceState.getString("tempNetwork"));
 
             mMode = savedInstanceState.getInt("Mode") ;
             if( mMode == 1){ supportView.setOnTouchListener(mModeLecture ); }
             else if(mMode == 2){ supportView.setOnTouchListener(mModeCreation ); }
 
 
-             */
+
         }
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
-        savedInstanceState.putInt("Mode",mMode);
 
+        writeOnExternalStorage(TEMP_FOLDER, TEMP_FILE) ;
+
+        savedInstanceState.putInt("Mode",mMode);
+        savedInstanceState.putString("tempNetwork", networkNameTextView.getText().toString() );
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -137,9 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initReseau(){
 
-        nodeViewModel.deleteAll();
         nodeList = new ArrayList<Node>() ;
-
         mGraph = new Graph(nodeList);
         myDraw = new DrawableGraph(mGraph);
         supportView.setImageDrawable(myDraw);
@@ -211,11 +209,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.item_edit : {
-                if( NETWORK_NAME.equals("")) {
+                if( networkNameTextView.getText().toString().equals("")) {
                     CreateNetworkDialog dialog = new CreateNetworkDialog(this);
                     dialog.show();
                 }
-                else{ createNetwork() ;
+                else{  NETWORK_NAME = networkNameTextView.getText().toString() ;
+                    createNetwork() ;
                     Toast.makeText(this,R.string.editting_mode_info,Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -226,16 +225,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,R.string.resetting_mode_info,Toast.LENGTH_LONG).show();
                 break;
             }
-            case R.id.item_further : {
-                Toast.makeText(this,R.string.further_mode_info,Toast.LENGTH_LONG).show();
-                break;
-            }
+
             case R.id.item_save : {
                  checkPermissionAndWrite();
                 break;
             }
             case R.id.item_import : {
-                readFromStorageIntent() ;
+                askPermissionToReadIntent() ;
                 break;
             }
             case R.id.item_screemshot : {
@@ -285,7 +281,6 @@ public class MainActivity extends AppCompatActivity {
                     selectedNode = mGraph.getSelectedNode(umpx, umpy);
                     if ( selectedNode != null ) {
                         selectedNode.upadte(umpx, umpy);
-                        nodeViewModel.update(selectedNode);
                     }
                     supportView.invalidate();
                     break ;
@@ -494,47 +489,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    ///*******************CAPTURE*********************************
-
-
-    //La capture de la vue racine
-    private   Bitmap getScreenShot() {
-        View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-        View screenView = rootView.getRootView();
-        screenView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
-        screenView.setDrawingCacheEnabled(false);
-        return bitmap;
-    }
-
-
-    //stockez le Bitmap dans la carte SDCard
-    private void storeScreenshot(){
-        Bitmap bm = getScreenShot() ;
-        long touchStartTime = System.currentTimeMillis() ;
-        String NETWORK_NAME = ""+touchStartTime ;
-
-        final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
-        File dir = new File(dirPath);
-        if(!dir.exists())
-            dir.mkdirs();
-        File file = new File(dirPath, NETWORK_NAME);
-        try {
-            FileOutputStream fOut = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) { e.printStackTrace();}
-    }
-
-
     private static final int MY_REQUEST_CODE_PERMISSION = 1000;
     private static final int MY_RESULT_CODE_FILECHOOSER = 2000;
-    private void askPermissionAndBrowseFile(){
+    private void askPermissionToReadIntent(){
         // With Android Level >= 23, you have to ask the user
         // for permission to access External Storage.
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) { // Level 23
-
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             // Check if we have Call permission
             int permisson = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
             if (permisson != PackageManager.PERMISSION_GRANTED) {
@@ -556,15 +516,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(chooseFileIntent, MY_RESULT_CODE_FILECHOOSER);
     }
 
-
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void readFromStorageIntent(){
-        askPermissionAndBrowseFile() ;
-
-    }
-
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityResult(int requestCode, int resultCode,Intent resultData) {
@@ -585,7 +536,7 @@ public class MainActivity extends AppCompatActivity {
                     networkNameTextView.setText(fileName.substring(0,taille-5) );
                 }
 
-                try { readFromStorage(fileName); } catch (ParseException e) { e.printStackTrace();}
+                readFromStorage(FOLDERNAME,fileName);
             }
         }
     }
@@ -593,14 +544,15 @@ public class MainActivity extends AppCompatActivity {
 
     // 2 - Read from storage
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void readFromStorage(String fileName) throws ParseException {
+    private void readFromStorage(String folderName, String fileName)  {
 
         if (Stockeur.isExternalStorageReadable()){
-            //String data = Stockeur.getDataFromStorage(Environment.getExternalStorageDirectory(), this, NETWORK_NAME+".json", FOLDERNAME);
+            //String data = Stockeur.getDataFromStorage(Environment.getExternalStorageDirectory(),this,FOLDERNAME , NETWORK_NAME+".json", );
 
-            String data = Stockeur.getDataFromStorage(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), this, fileName, FOLDERNAME);
+            String data = Stockeur.getDataFromStorage(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), this, folderName, fileName);
             JSONParser parser = new JSONParser();
-            JSONObject  dataJson = (JSONObject) parser.parse(data) ;
+            JSONObject  dataJson = null;
+            try {    dataJson = (JSONObject) parser.parse(data);         } catch (ParseException e) { e.printStackTrace(); }
             JSONArray  nodesJson = (JSONArray) dataJson.get("nodes");
             JSONArray  connexionsJson = (JSONArray) dataJson.get("connexions");
 
@@ -645,11 +597,11 @@ public class MainActivity extends AppCompatActivity {
 
     // 3 - Write on external storage
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void writeOnExternalStorage() throws JSONException {
+    private void writeOnExternalStorage(String foldername, String networkName)  {
 
         if (Stockeur.isExternalStorageWritable()){
             String exportableData = mGraph.export() ;
-            Stockeur.setDataInStorage( getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), this, NETWORK_NAME+".json", FOLDERNAME, exportableData);
+            Stockeur.setDataInStorage( getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), this, foldername,networkName+".json",  exportableData);
             //Toast.makeText(this,R.string.save_network_message,Toast.LENGTH_LONG).show();
             Toast.makeText(this,Environment.getExternalStorageDirectory().toString()+"/"+FOLDERNAME,Toast.LENGTH_LONG).show();
         } else {
@@ -665,10 +617,9 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void checkPermissionAndWrite(){
         if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            try {  writeOnExternalStorage() ;  } catch (JSONException e) { e.printStackTrace(); }
+            writeOnExternalStorage(FOLDERNAME, NETWORK_NAME) ;
         }else{
             ActivityCompat.requestPermissions( MainActivity.this, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100 );
-
         }
     }
 
@@ -678,7 +629,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if( requestCode == 100 && (grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED ) ){
-            try {  writeOnExternalStorage() ;  } catch (JSONException e) { e.printStackTrace(); }
+            writeOnExternalStorage(FOLDERNAME,NETWORK_NAME) ;
 
         }
 

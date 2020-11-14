@@ -68,7 +68,6 @@ public class OptionDialogConn extends Dialog {
 
             public void onClick(View v) {
                 activity.optionPopupConnVisible = false;
-                MainActivity.connexionViewModel.delete(MainActivity.selectedConn.getId());
                 MainActivity.mGraph.getConns().remove(MainActivity.selectedConn);
                 activity.supportView.invalidate();
                 dismiss();

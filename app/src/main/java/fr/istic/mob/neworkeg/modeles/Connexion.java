@@ -11,8 +11,6 @@ import androidx.room.PrimaryKey;
 
 import java.util.Collection;
 
-import fr.istic.mob.neworkeg.MainActivity;
-
 @Entity
 public class Connexion {
 
@@ -37,10 +35,7 @@ public class Connexion {
     public static int CONN_WIDTH= 10;
 
 
-    public Connexion(){
-        this.debut = MainActivity.nodeViewModel.getNodeById(debutNodeId) ;
-        this.fin = MainActivity.nodeViewModel.getNodeById(finNodeId) ;
-    }
+    public Connexion(){ }
 
 
     @Ignore

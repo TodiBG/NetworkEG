@@ -9,10 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import fr.istic.mob.neworkeg.database.NetworkDB;
-
 public class OptionDialogNode extends Dialog {
-    private NetworkDB dataBase ;
     public MainActivity activity;
     public Dialog dialog;
     private Button yes;
@@ -33,8 +30,6 @@ public class OptionDialogNode extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dataBase = NetworkDB.getInstance(activity) ;
-
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.popup_node);

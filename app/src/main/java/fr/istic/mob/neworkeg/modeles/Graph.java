@@ -9,16 +9,12 @@ import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
-
-import fr.istic.mob.neworkeg.MainActivity;
 
 public class Graph {
 
@@ -227,9 +223,6 @@ public class Graph {
             }
         }
         if (!overlap) {
-            long id= MainActivity.nodeViewModel.insert(node);
-            node.setId(id);
-            System.out.println("Node Id ==   "+node.getId());
             this.mNodes.add(node);
         }
 
@@ -251,7 +244,6 @@ public class Graph {
     public void removeNode(Node node) {
         try {
             removeNodeConns(node);
-            MainActivity.nodeViewModel.delete(node.getId());
             mNodes.remove(node);
         } catch (ConcurrentModificationException e) {
             removeNode(node); // passe 1 fois sur 4 donc executé plusieurs fois par appel
@@ -266,7 +258,6 @@ public class Graph {
     public void removeNodeConns(Node node) {
         for (Connexion conn : mConns) {
             if (conn.contains(node)) {
-                MainActivity.nodeViewModel.delete(node.getId());
                 mConns.remove(conn);
             }
         }
@@ -393,7 +384,7 @@ public class Graph {
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public String export() throws JSONException {
+    public String export()  {
 
         ArrayMap data  = new  ArrayMap() ;
         data.put("nodes",mNodes) ;
