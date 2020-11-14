@@ -38,6 +38,7 @@ import fr.istic.mob.neworkeg.database.dao.ConnexionViewModel;
 import fr.istic.mob.neworkeg.database.dao.NodeViewModel;
 import fr.istic.mob.neworkeg.modeles.Connexion;
 import fr.istic.mob.neworkeg.modeles.DrawableGraph;
+import fr.istic.mob.neworkeg.modeles.Fonction;
 import fr.istic.mob.neworkeg.modeles.Graph;
 import fr.istic.mob.neworkeg.modeles.Node;
 import fr.istic.mob.neworkeg.modeles.Stockeur;
@@ -238,7 +239,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.item_screemshot : {
-                storeScreenshot() ;
+                String dirPath  = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)+"/MyScreeshot" ;
+                Fonction.takeScreenshot(this, getWindow().getDecorView().getRootView(),dirPath,"Screenshot");
                 break;
             }
             case R.id.item_help : {
