@@ -50,14 +50,22 @@
     <string name="help_pup_title">Help </string>
 
 
-    <string name="HelpText">\n\n\nThe purpose of this application is to connect the objects of an apartment.\n
-Its menu is composed of options:\n
-Creation mode\n
-The creation mode allows you to make objects (presented as a rectangle) as well as to choose the objects that will be connected between them by touching these two objects.
-A long click on an object allows you to open the parameters of this object you can change the color the name as well as delete it, it is also the case of a connection.
+    <string name="HelpText"> \n\n\
+        This application aims to connect objects of an apartment. Its menu is composed of somes options:\n\n
+        \t\t READING MODE \n
+        In read mode you can only move objects for the readability of the network of connected objects.
+        Place your finger on an object and move the finger to move the object.
+        If you want to create objects or connections then you have to switch to creation mode. \n\n
 
-Playback mode\n This mode allows you to have a preview of the plan of the apartment and its objects without being able to modify them.\n
-The other options is the representative of the contains that will be developed in V2.
-Help allows to learn how to use the application.\n\n\n</string>
+        \t\t CREATION MODE \n
+        In creation mode you can create or modify objects and their connections.
+        When you are in creation mode, A long touch of the plan of the apartment allows you to create an object.
+        Place your finger on an object and move the finger to draw a connection.
+        In design mode you cannot move objects, so you must switch to reading mode to do so.
+        A click on an object allows to open the parameters of this object and to modify it, click on the middle of a connection to do the same. \n\n
+
+        \n\n IMPORT A PLAN option allows you to import your own apartment plan.
+        \n\n
+        The other menu options are self-explanatory.</string>
 
 </resources>

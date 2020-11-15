@@ -52,15 +52,21 @@
 
 
     <string name="help_pup_title">Aide </string>
-    <string name="HelpText">\n\n\nCette application a pour but de connecter les objets d\'un appartement.\n
-Son menu est composé des options:\n
-Mode création\n
-Le mode création permet de faire des objets (présentés sous forme de rectangle) ainsi que choisir les objets qui seront connectés entre eux grâce à un touché de ces deux objets
-Un long click sur un objet permet d\'ouvrir les paramètres de cet objet vous pouvez changer la couleur le nom ainsi que le supprimer, c\'est aussi le cas d\'une connexion.
+    <string name="HelpText">\n\n\n Cette application a pour but de connecter les objets d\'un appartement. Son menu est composé des options:\n\n
+        \t\t MODE LECTURE\n
+        En mode lecture vous ne pouvez que déplacer des objets pour la lisibilité du réseau des objets connectés.
+        Posez votre doigt sur un objet et deplacer le doigt pour deplacer l\'objet.
+        Si vous voulez créer des objets ou des connexion alors vous devez passer en mode création.\n\n
 
-Mode lecture \n
-ce mode permet d\'avoir un aperçu du plan de l\'appartement et de ses objets sans pouvoir les modifier.
-Les autres options est le représentant des fonctionnalités qui seront développer dans la V2.\n
-L\'Aide permet d\'Apprendre à utiliser l\'application.\n\n\n</string>
+        \t\t MODE CREATION\n
+        En mode création vous pouvez créer ou modifier des objets et leurs connexions.
+        Lorsque que vous êtes en mode création, Une longue touche du plan de l\'appartement permet de créer un objet.
+        Posez votre doigt sur un objet et deplacer le doigt pour tracer une connexion.
+        En mode crétion vous ne pouvez pas deplacer les objets, vous devez donc passer en mode lecture pour le faire.
+        Un click sur un objet permet d\'ouvrir les paramètres de cet objet et le modifier, cliquez sur le milieu d\'une connexion pour faire pareil. \n\n
+
+        \n\n L\'option IMPORTER UN PLAN permet d\'importer votre propre plan d\'appartement.
+        \n\n
+        Les autres options du menu sont explicites.\n\n\n</string>
 
 </resources>
