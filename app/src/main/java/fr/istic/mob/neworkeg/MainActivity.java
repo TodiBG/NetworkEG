@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,6 +28,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public DrawableGraph myDraw;
     public static ImageView supportView;
     private TextView networkNameTextView  ;
+    private Drawable backgroundImage = null ;
 
     int downx = 0;
     int downy = 0;
@@ -62,8 +67,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static  String NETWORK_NAME = "";
     private static final String FOLDERNAME = "Sauvegardes";
-    public static  String TEMP_FOLDER = "temp";
+    public static final String TEMP_FOLDER = "temp";
     private static final String TEMP_FILE = "temp_network";
+    private static final int IMAGE_PICKER_CODE =1000;
+    private static final int IMAGE_PICKER_PERMISSION_CODE =1010;
+    private static final int MY_REQUEST_CODE_PERMISSION = 1020;
+    private static final int MY_RESULT_CODE_FILECHOOSER = 1030;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("ClickableViewAccessibility")
@@ -76,49 +85,26 @@ public class MainActivity extends AppCompatActivity {
         networkNameTextView.setText(NETWORK_NAME);
         supportView = (ImageView) findViewById(R.id.imageViewPlan);
 
+        if (backgroundImage != null){ supportView.setBackground(backgroundImage); }
+        else { supportView.setBackgroundResource(R.mipmap.plan_portrait);}
+
         nodeList = new ArrayList<>() ;
         List<Connexion> connexionsList = new ArrayList<>() ;
         mGraph = new Graph(nodeList);
         myDraw = new DrawableGraph(mGraph);
         supportView.setImageDrawable(myDraw);
-        supportView.setOnTouchListener(mModeLecture );
+        setModeLecture();
         updateGraph(connexionsList) ;
 
         if (savedInstanceState != null){
-            /*
-            supportView = (ImageView) findViewById(R.id.imageViewPlan);
-            myDraw = new DrawableGraph(mGraph);
-            supportView.setImageDrawable(myDraw);
-
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int deviceWidth =  metrics.widthPixels;
-            int deviceHeigt =  metrics.heightPixels;
-            float pX = supportView.getX() ;
-            float pY = supportView.getY() ;
-
-            float interval = 0 ;
-            for( Node n:mGraph.getNoeuds()){
-
-                interval = n.getX() ;
-                n.setX(n.getY()) ;
-                n.setX(interval) ;
-
-                if( n.getX() > 0.8*deviceWidth ){ n.setX((8*deviceWidth)/10) ;}
-                if( n.getY()  > 0.8*deviceHeigt ){ n.setY((8*deviceHeigt)/10) ;}
-            }
-            */
 
             readFromStorage(TEMP_FOLDER,TEMP_FILE+".json");
             NETWORK_NAME = savedInstanceState.getString("tempNetwork") ;
             networkNameTextView.setText(savedInstanceState.getString("tempNetwork"));
 
             mMode = savedInstanceState.getInt("Mode") ;
-            if( mMode == 1){ supportView.setOnTouchListener(mModeLecture ); }
-            else if(mMode == 2){ supportView.setOnTouchListener(mModeCreation ); }
-
-
-
+            if( mMode == 1){ setModeLecture(); }
+            else if(mMode == 2){ setCreationMode(); }
         }
 
     }
@@ -141,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         mGraph = new Graph(nodeList);
         myDraw = new DrawableGraph(mGraph);
         supportView.setImageDrawable(myDraw);
-        supportView.setOnTouchListener(mModeLecture );
+        setModeLecture();
     }
 
     //Desine les connexions sauvegardées dans la base de donnéeskl
@@ -167,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
         myDraw = new DrawableGraph(mGraph);
         supportView.setImageDrawable(myDraw);
-        supportView.setOnTouchListener(mModeLecture );
+        setModeLecture();
     }
 
 
@@ -176,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
         networkNameTextView.setText(NETWORK_NAME);
         myDraw = new DrawableGraph(mGraph);
         supportView.setImageDrawable(myDraw);
-        supportView.setOnTouchListener(mModeCreation );
+        setCreationMode();
         mMode = 2 ;
     }
 
     public void  lecture (){
-        supportView.setOnTouchListener(mModeLecture);
+        setModeLecture();
         networkNameTextView.setText(NETWORK_NAME);
         Toast.makeText(this,R.string.reading_mode_info,Toast.LENGTH_LONG).show();
     }
@@ -234,9 +220,14 @@ public class MainActivity extends AppCompatActivity {
                 askPermissionToReadIntent() ;
                 break;
             }
+            case R.id.item_import_plan : {
+                askPermissionForImagePicker() ;
+                break;
+            }
             case R.id.item_screemshot : {
                 String dirPath  = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)+"/MyScreeshot" ;
-                Fonction.takeScreenshot(this, getWindow().getDecorView().getRootView(),dirPath,"Screenshot");
+                Uri uriToScreenshotImge = Fonction.takeScreenshot(this, getWindow().getDecorView().getRootView(),dirPath,"screenshot");
+                shareScreenshot(uriToScreenshotImge);
                 break;
             }
             case R.id.item_help : {
@@ -267,15 +258,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case MotionEvent.ACTION_UP: {
-                    upx = (int) event.getX();
-                    upy = (int) event.getY();
-                    Long time = System.currentTimeMillis() - touchStartTime;
-                    if ( ((Math.abs(upx - downx) < 10) || (Math.abs(upy - downy) < 10)) && (time>=LONG_TOUCH_DURATION) ) {
-                        creationAndLectureInfo(R.string.passOnCreationMode) ;
-                    }
-
-                    break;}
+                    fingerIsMoving = true ;
+                    break;
+                }
                 case MotionEvent.ACTION_MOVE:{
+                    fingerIsMoving = true ;
                     umpx = (int) event.getX();
                     umpy = (int) event.getY();
                     selectedNode = mGraph.getSelectedNode(umpx, umpy);
@@ -288,11 +275,49 @@ public class MainActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_CANCEL:{break;}
 
             }
-            return true;
+
+            fingerIsMoving = false ;
+            return false;
         }
     } ;
 
+
+    private void setModeLecture(){
+        supportView.setOnTouchListener(mModeLecture);
+        supportView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(!fingerIsMoving) {
+                    creationAndLectureInfo(R.string.passOnCreationMode);
+                }
+                return true; }
+        });
+    }
+
+
+    boolean fingerIsMoving = false ;
+
     // Bacukler en mode création
+    private void setCreationMode(){
+        supportView.setOnTouchListener(mModeCreation);
+        supportView.setOnLongClickListener(onLongTouchModeCreation);
+    }
+
+    //onLongTouch for creation mode
+    private View.OnLongClickListener onLongTouchModeCreation = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            if(!fingerIsMoving) {
+                int number = 1 + myDraw.mGraph.getNoeuds().size();
+                mNewNode = new Node(upx, upy, number + "");
+                showNewNodeOptions();
+                supportView.invalidate();
+            }
+                return true;
+        }
+    } ;
+
+    // onTouch foir creation mode
     private View.OnTouchListener mModeCreation = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -305,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
                     touchStartTime = System.currentTimeMillis();
                     break;
                 case MotionEvent.ACTION_UP:
+                    fingerIsMoving = true ;
                     myDraw.setTempConnNull();
                     upx = (int) event.getX();
                     upy = (int) event.getY();
@@ -312,11 +338,7 @@ public class MainActivity extends AppCompatActivity {
                     boolean newNodeCreated = false ;
                     time = System.currentTimeMillis() - touchStartTime;
                     if ( ((Math.abs(upx - downx) < 10) || (Math.abs(upy - downy) < 10)) && (time>=LONG_TOUCH_DURATION) ) {
-                        int number = 1 + myDraw.mGraph.getNoeuds().size();
-                        mNewNode = new Node(upx, upy, number + "");
                         newNodeCreated = true ;
-                        showNewNodeOptions();
-                        supportView.invalidate();
                     }
 
                     if ( ((upx == downx) || (upy == downy)) && (time>=LONG_TOUCH_DURATION-800)&&(!newNodeCreated)  ) {
@@ -336,7 +358,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-
                     Node n1 = mGraph.getSelectedNode(downx, downy);
                     Node n2 = mGraph.getSelectedNode(upx, upy);
                     if ((n1 != null) && (n2 != null)) {
@@ -350,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
+                    fingerIsMoving = true ;
                     umpx = (int) event.getX();
                     umpy = (int) event.getY();
 
@@ -366,7 +388,9 @@ public class MainActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_CANCEL:
                     break;
             }
-            return true;
+
+            fingerIsMoving = false ;
+            return false;
         }
     };
 
@@ -487,10 +511,6 @@ public class MainActivity extends AppCompatActivity {
         return mGraph.getConnOutOfMe(selectedNode);
     }
 
-
-
-    private static final int MY_REQUEST_CODE_PERMISSION = 1000;
-    private static final int MY_RESULT_CODE_FILECHOOSER = 2000;
     private void askPermissionToReadIntent(){
         // With Android Level >= 23, you have to ask the user
         // for permission to access External Storage.
@@ -508,7 +528,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void doBrowseFile()  {
         Intent chooseFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        chooseFileIntent.setType("*/*");
+        chooseFileIntent.setType("file/json");
         // Only return URIs that can be opened with ContentResolver
         chooseFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
 
@@ -538,6 +558,17 @@ public class MainActivity extends AppCompatActivity {
 
                 readFromStorage(FOLDERNAME,fileName);
             }
+        }else if (resultCode== RESULT_OK && requestCode==IMAGE_PICKER_CODE){
+
+            Uri uri = resultData.getData();
+
+            Drawable bg;
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+                bg = Drawable.createFromStream(inputStream, uri.toString());
+                supportView.setBackground(bg);
+            } catch (FileNotFoundException e) { e.getMessage(); }
+
         }
     }
 
@@ -547,8 +578,6 @@ public class MainActivity extends AppCompatActivity {
     private void readFromStorage(String folderName, String fileName)  {
 
         if (Stockeur.isExternalStorageReadable()){
-            //String data = Stockeur.getDataFromStorage(Environment.getExternalStorageDirectory(),this,FOLDERNAME , NETWORK_NAME+".json", );
-
             String data = Stockeur.getDataFromStorage(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), this, folderName, fileName);
             JSONParser parser = new JSONParser();
             JSONObject  dataJson = null;
@@ -598,17 +627,16 @@ public class MainActivity extends AppCompatActivity {
     // 3 - Write on external storage
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void writeOnExternalStorage(String foldername, String networkName)  {
-
         if (Stockeur.isExternalStorageWritable()){
             String exportableData = mGraph.export() ;
             Stockeur.setDataInStorage( getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), this, foldername,networkName+".json",  exportableData);
-            //Toast.makeText(this,R.string.save_network_message,Toast.LENGTH_LONG).show();
-            Toast.makeText(this,Environment.getExternalStorageDirectory().toString()+"/"+FOLDERNAME,Toast.LENGTH_LONG).show();
+            if( !foldername.equals(TEMP_FOLDER) ){
+                String msg =  R.string.network_saved_message+" "+getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)+"/"+foldername ;
+                Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
+            }
         } else {
             //Toast.makeText(this, getString(R.string.external_storage_impossible_create_file), Toast.LENGTH_LONG).show();
         }
-
-
     }
 
 
@@ -628,20 +656,49 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if( requestCode == 100 && (grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED ) ){
+
+        if(requestCode == 100 && (grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED ) ){
             writeOnExternalStorage(FOLDERNAME,NETWORK_NAME) ;
 
         }
-
-        System.out.println("requestCode == "+requestCode);
-
-        if ( requestCode == MY_REQUEST_CODE_PERMISSION &&  (grantResults.length > 0) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        else if ( requestCode == MY_REQUEST_CODE_PERMISSION &&  (grantResults.length > 0) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.doBrowseFile();
         }
-
-
-
+        else if ( requestCode == IMAGE_PICKER_PERMISSION_CODE &&   (grantResults.length > 0) && grantResults[0] == PackageManager.PERMISSION_GRANTED    ){
+            pickImageFromGallery();
+        }
     }
+
+    // ========================= Importer ses propres plans
+
+    private void  askPermissionForImagePicker(){
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                String[] permissions ={ Manifest.permission.READ_EXTERNAL_STORAGE };
+                requestPermissions(permissions,IMAGE_PICKER_PERMISSION_CODE);
+            }
+            else{ pickImageFromGallery(); }
+        }
+        else{ pickImageFromGallery(); }
+    }
+
+
+    private void pickImageFromGallery() {
+        //Intent to pick image
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent,IMAGE_PICKER_CODE);
+    }
+
+
+    private  void shareScreenshot(Uri uriToImage){
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+        shareIntent.setType("image/jpeg");
+        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+    }
+
 }
 
 

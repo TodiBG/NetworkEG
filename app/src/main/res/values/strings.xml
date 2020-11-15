@@ -29,7 +29,7 @@
     <string name="resetting_mode_info"> You have reset all ! </string>
     <string name="further_mode_info"> further modes are not defined yet ! </string>
     <string name="objetNonDeplacableEnModeCreation"> Object can be moved only if you are on READING MODE ! </string>
-    <string name="passOnCreationMode"> Ativate EDITTING MODE for creation or editting ! </string>
+    <string name="passOnCreationMode"> Activate EDITTING MODE for creation or editting ! </string>
 
     <string name="firstNode"> Object 1 : </string>
     <string name="secondNode"> Object 2 : </string>
@@ -44,6 +44,14 @@
     <string name="create">create </string>
     <string name="new_object_name">New object\'s name </string>
     <string name="creationNodeLabel">New object creation </string>
+    <string name="import_plan_message">Import a plan </string>
+    <string name="network_saved_message"> NETWORK SAVED IN : </string>
+    <string name="send_to"> Send to </string>
+
+
+
+
+
 
 
     <string name="help_pup_title">Help </string>
