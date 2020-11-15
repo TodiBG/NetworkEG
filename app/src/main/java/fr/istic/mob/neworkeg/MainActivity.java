@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             case R.id.item_save : {
-                 checkPermissionAndWrite();
+                checkPermissionAndWrite();
                 break;
             }
             case R.id.item_import : {
@@ -666,18 +666,6 @@ public class MainActivity extends AppCompatActivity {
         shareIntent.setType("image/jpeg");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

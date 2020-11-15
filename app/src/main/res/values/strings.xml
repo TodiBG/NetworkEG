@@ -1,5 +1,4 @@
 <resources>
-
     <string name="app_name">NeworkEG</string>
     <string name="label">Label</string>
     <string name="cancel">Cancel</string>
@@ -47,10 +46,6 @@
     <string name="import_plan_message">Import a plan </string>
     <string name="network_saved_message"> NETWORK SAVED IN : </string>
     <string name="send_to"> Send to </string>
-
-
-
-
 
     <string name="help_pup_title">Help </string>
 
