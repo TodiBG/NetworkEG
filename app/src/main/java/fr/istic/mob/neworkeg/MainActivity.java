@@ -103,8 +103,13 @@ public class MainActivity extends AppCompatActivity {
             networkNameTextView.setText(savedInstanceState.getString("tempNetwork"));
 
             mMode = savedInstanceState.getInt("Mode") ;
+<<<<<<< HEAD
             if( mMode == 1){ setModeLecture(); }
             else if(mMode == 2){ setCreationMode(); }
+=======
+            if( mMode == 1){ supportView.setOnTouchListener(mModeLecture ); }
+            else if(mMode == 2){ supportView.setOnTouchListener(mModeCreation ); }
+>>>>>>> 71399bdc8c0a1bf553489053a485cdab1f9ed428
         }
 
     }
@@ -213,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             case R.id.item_save : {
-                 checkPermissionAndWrite();
+                checkPermissionAndWrite();
                 break;
             }
             case R.id.item_import : {
@@ -663,6 +668,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if ( requestCode == MY_REQUEST_CODE_PERMISSION &&  (grantResults.length > 0) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.doBrowseFile();
+<<<<<<< HEAD
         }
         else if ( requestCode == IMAGE_PICKER_PERMISSION_CODE &&   (grantResults.length > 0) && grantResults[0] == PackageManager.PERMISSION_GRANTED    ){
             pickImageFromGallery();
@@ -681,7 +687,26 @@ public class MainActivity extends AppCompatActivity {
         }
         else{ pickImageFromGallery(); }
     }
+=======
+        }
+        else if ( requestCode == IMAGE_PICKER_PERMISSION_CODE &&   (grantResults.length > 0) && grantResults[0] == PackageManager.PERMISSION_GRANTED    ){
+            pickImageFromGallery();
+        }
+    }
 
+    // ========================= Importer ses propres plans
+>>>>>>> 71399bdc8c0a1bf553489053a485cdab1f9ed428
+
+    private void  askPermissionForImagePicker(){
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                String[] permissions ={ Manifest.permission.READ_EXTERNAL_STORAGE };
+                requestPermissions(permissions,IMAGE_PICKER_PERMISSION_CODE);
+            }
+            else{ pickImageFromGallery(); }
+        }
+        else{ pickImageFromGallery(); }
+    }
 
     private void pickImageFromGallery() {
         //Intent to pick image
@@ -691,6 +716,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+<<<<<<< HEAD
     private  void shareScreenshot(Uri uriToImage){
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
@@ -699,6 +725,28 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
 
+=======
+    private void pickImageFromGallery() {
+        //Intent to pick image
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent,IMAGE_PICKER_CODE);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 71399bdc8c0a1bf553489053a485cdab1f9ed428
 }
 
 
