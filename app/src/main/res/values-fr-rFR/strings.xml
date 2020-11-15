@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">NeworkEG</string>
+    <string name="app_name">NeworkEG2</string>
     <string name="label">Nom</string>
     <string name="cancel">Annuler</string>
     <string name="node_settings">Paramètre des objets</string>
@@ -45,6 +45,10 @@
     <string name="network_name">Nom du réseau </string>
     <string name="create">Créer </string>
     <string name="new_object_name">Nom de l\'objet</string>
+    <string name="import_plan_message">Importer un plan </string>
+    <string name="network_saved_message"> RESEAU SAVEGARDE A : </string>
+    <string name="send_to"> Envoyer à </string>
+
 
 
 
